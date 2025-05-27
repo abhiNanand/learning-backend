@@ -12,6 +12,12 @@ Files usually have a .js extension
 Uses:
 const fs = require('fs');  // import
 module.exports = myFunction;  // export
+
+
+Enable ES Module Support
+To use import statements, you need to either:
+Rename your file to .mjs, OR
+Add "type": "module" in your package.json
 ----------------------------------------------------------------------------------------------------
 
 🌐 MJS = ES Modules (ECMAScript Modules)

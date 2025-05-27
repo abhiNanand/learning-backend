@@ -1,0 +1,56 @@
+Reading files with Node.js
+---------------------------
+
+The simplest way to read a file in Node.js is to use the fs.readFile() method, passing it the file path, encoding and a callback function that will be called with the file data.
+
+import the built-in File System module
+import fs form 'node:fs'
+
+fs.readFile(path,(err,data)=>{});
+
+
+Jab aap fs.readFile('/Users/joe/test.txt', 'utf8', (err, data) => {...}) likhte ho, iska matlab hai:
+
+Aap computer ko keh rahe ho:
+"Is file ko UTF-8 encoding ke hisaab se padho, taki text theek samajh aaye."
+
+Agar aap encoding specify nahi karoge, toh computer confuse ho jayega ki har byte ka matlab kya hai, aur aapko garbled text mil sakta hai.
+
+UTF-8 ek system hai jo characters ko numbers (aur phir bytes) mein convert karta hai.
+
+ASCII encoding mein A = 65, B = 66, C = 67 hota hai, aur UTF-8 is ASCII ko bhi support karta hai.
+
+Matlab UTF-8 mein agar simple English letters hain (A, B, C...), toh wo exactly same numbers assign karta hai jaise ASCII.
+
+example.
+
+1.
+const fs = require('node:fs');
+
+fs.readFile('note1.txt', 'utf8', (err, data) => {
+  if (err) {
+    console.log(err);
+    return;
+  }
+  console.log(data);
+});
+
+//2.Alternatively, you can use the synchronous version fs.readFileSync():
+const fs = require('node:fs');
+
+try {
+  const data = fs.readFileSync('/Users/joe/test.txt', 'utf8');
+  console.log(data);
+} catch (err) {
+  console.error(err);
+}
+
+3.by using promise
+import fs from 'node:fs/promises';
+
+try {
+  const data = await fs.readFile('/Users/joe/test.txt', { encoding: 'utf8' });
+  console.log(data);
+} catch (err) {
+  console.error(err);
+}
