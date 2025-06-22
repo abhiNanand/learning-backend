@@ -1,0 +1,83 @@
+express : framework for node js.
+-------
+
+npm install express
+
+Libray- collection of function/methods we call
+framework- a structured platform where we build our app.
+============================
+
+import express from express;
+
+const app=express();
+
+app.get(path, callback)
+Ye define karta hai ki jab kisi path pe GET request aaye, to kya response dena hai.
+
+app.get('/', (req, res) => {
+  res.send('Hello world');
+});
+'/' = Root path (jaise http://localhost:3000/)
+
+(req, res) = Request aur Response object
+
+res.send() = Client ko response bhejna
+
+app.listen(port, callback)
+Ye Express server ko start karta hai aur batata hai ki kaunse port pe listen karein.
+
+Example:
+ 
+app.listen(3000, () => {
+  console.log('Server is running on port 3000');
+});
+Iska matlab: "Server active ho jaaye aur port 3000 pe aane wali requests ko sunna (listen) shuru kare."
+
+app.get()	Ye batata hai: “Kya response dena है?” matlab customber aaye tho chai banana.
+app.listen()	Ye server चालू karta hai aur कहता है: “Ab request सुनने के लिए ready हूँ.” matlab dukan kholna taki customber aa sake.
+
+Hamisha app.listen() ko last me likho.
+Jab hum Express me app.listen() lagate hain, us waqt server run ho jaata hai,
+lekin agar usse ye hi nahi pata ki kaunse route (path) handle karne hain, to wo customer (request) aayi to "main kya karun?" bolkar error de dega.
+
+🧠 Programming Analogy:
+app.get() = Dukan ke andar menu card lagana → kya kya cheez milegi
+
+app.listen() = Dukan ka shutter kholna
+
+Agar:
+
+Tum shutter pehle khol doge, aur menu baad me lagao, to jo customer aaye, usse tum bolo:
+
+"Mujhe khud hi nahi pata kya milega!" ❌
+
+Isliye:
+
+✅ Best Practice:
+Pehle menu set karo (routes) → app.get(), app.post()
+Phir dukaan kholo (start server) → app.listen()
+
+app.listen() sirf ek baar likhna hota hai, poore server ke liye, na ki har request ke baad. ✅
+===========================================================================================================
+
+Note: hum response me kuch change kr rhe hai tho hame wha pr show nhi ho rha server band karke dubara karna par rha server start.
+
+Kyunki:
+
+Node.js by default automatically restart nahi hota jab tum file me koi change karte ho.
+
+To tumhara purana code hi run hota rehta hai, jab tak tum manually server ko Ctrl + C karke dobara node index.js (ya jo bhi file) se start nahi karte.
+
+✅ Solution: Use nodemon
+🔥 nodemon = "Node Monitor"
+Ye ek dev tool hai jo automatically server restart kar deta hai jab bhi file me change hota hai.
+
+ Install nodemon
+ npm install -g nodemon
+Run your app with nodemon instead of node.
+nodemon index.js
+
+or 
+
+"dev": "nodemon index.js"
+===================

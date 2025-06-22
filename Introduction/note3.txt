@@ -54,3 +54,86 @@ try {
 } catch (err) {
   console.error(err);
 }
+
+
+
+readFile Reads the entire file at once.
+Blocks memory with the full contents.
+Not scalable for very large files.
+
+Thats why we use streams
+Stream allows us to read file piece by piece chunk by chunk.
+
+import fs from 'node:fs';
+
+const readStream = fs.createReadStream('largefile.txt', { encoding: 'utf8' });
+
+readStream.on('data', (chunk) => {
+  console.log('Received chunk:', chunk);
+});
+
+readStream.on('end', () => {
+  console.log('Finished reading file.');
+});
+
+readStream.on('error', (err) => {
+  console.error('Error reading file:', err);
+});
+Key Benefits of Using Streams:
+Memory-efficient: Only a small part of the file is in memory at any time.
+
+Scalable: Handles very large files without memory pressure.
+
+Non-blocking: Stream operations are asynchronous.
+
+
+
+
+
+
+
+
+
+
+import fs from 'fs';
+import { pipeline } from 'node:stream/promises';
+import path from 'path';
+
+const fileUrl = 'https://www.gutenberg.org/files/2701/2701-0.txt';
+const outputFilePath = path.join(process.cwd(), 'moby.md');
+
+async function downloadFile(url, outputPath) {
+  const response = await fetch(url);
+
+  if (!response.ok || !response.body) {
+    throw new Error(`Failed to fetch ${url}. Status: ${response.status}`);
+  }
+
+  const fileStream = fs.createWriteStream(outputPath);
+  console.log(`Downloading file from ${url} to ${outputPath}`);
+
+  await pipeline(response.body, fileStream);
+  console.log('File downloaded successfully');
+}
+
+async function readFile(filePath) {
+  const readStream = fs.createReadStream(filePath, { encoding: 'utf8' });
+
+  try {
+    for await (const chunk of readStream) {
+      console.log('--- File chunk start ---');
+      console.log(chunk);
+      console.log('--- File chunk end ---');
+    }
+    console.log('Finished reading the file.');
+  } catch (error) {
+    console.error(`Error reading file: ${error.message}`);
+  }
+}
+
+try {
+  await downloadFile(fileUrl, outputFilePath);
+  await readFile(outputFilePath);
+} catch (error) {
+  console.error(`Error: ${error.message}`);
+}
