@@ -17,7 +17,7 @@ npm install mongoose
 
 ✅ 2. Define a Schema and Model
 
-import mongoose from "moongoose";
+import mongoose from "mongoose";
 
 //ye jo Schema me jo object hai usme hum data rakhtey hai.
 //const userSchema = new mongoose.Schema({});
