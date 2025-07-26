@@ -1,0 +1,166 @@
+Node.js HTTP Module : enalbe developer to create and manage
+--------------------
+                      https server.
+
+-handling server-side HTTP requests and responses.
+-allow seamless communication between clients and servers.
+-it is build in module though which data is transfer. 
+-Supports various HTTP methods like GET, POST, PUT, DELETE, etc.
+
+Creating Servers using HTTP
+----------------------------
+
+import http from 'http';
+http.createServer((request,response)=>{
+  response.write("server running!");
+  response.end();
+}).listen(3000);
+
+In this example
+---------------
+
+http.createServer() is used to create a new HTTP server.
+The (request) object represents the incoming request from the client.
+The (response) object is used to send the HTTP response to the client.
+response.write() sends data as part of the response.
+response.end() signals that the response is complete.
+server.listen() makes the server listen on the specified port (3000 in this case).
+
+------------------------------------------------------------------------------------------------------------
+
+Working with HTTP Headers
+--------------------------
+
+
+
+HTTP headers let you send additional information with your response.
+
+The res.writeHead() method is used to set the status code and response headers.
+
+🔹 1. res.writeHead(statusCode, headers)
+
+the Content-Type header, helps inform the client (usually the browser) about the type of content the server is sending. 
+If the Content-Type is set to text/html, the browser knows that the response is an HTML document and can render it accordingly.
+If the Content-Type is set to application/json, the browser or client knows the response is in JSON format and can parse it as such.
+
+example:
+
+res.writeHead(200,{
+  'Content-Type': 'text/html', //tells browser that the content is html
+  'X-Powred-By': 'Node.js', // Custom header (optional)
+  'Cache-Control':'no-cache, no-store, must-revalidate, // Prevents caching
+  'Set-Cookie':'sessionid=abc123'HttpOnly' // Sets a cookie in browser
+});
+
+res.end('<h1>Hello, World!</h1>);
+
+🔹 2. What is 200?
+-200 is an HTTP status code.
+-It means: ✅ OK — "The request was successful."
+
+🔢 Common HTTP Status Codes:
+1. 400	Bad Request	The request is invalid
+2. 401	Unauthorized	User is not authenticated
+3. 403	Forbidden	User is not allowed to access
+4. 404	Not Found	The resource doesn't exist
+5. 500	Internal Server Error	Your server crashed or failed.
+
+
+
+🧁 What is a Cookie?
+-A small data piece stored in the browser.
+-Used for sessions, login tokens, etc.
+-HttpOnly means: JavaScript cannot access it — for security.
+
+example:
+
+    if (contentType === 'text/html') {
+        res.write('<html><body><h1>Hello, World!</h1></body></html>');
+    } else if (contentType === 'application/json') {
+        res.write(JSON.stringify({ message: "Hello, World!" }));
+    }
+    =====================================================================================================
+
+Parsing URLs with the URL Module
+--------------------------------
+
+🔧 What is the url module?
+-It provides utilities to parse a full url string into object.
+-get properties like protocol, hostname, path, query, etc.
+-format or resolve urls.
+
+example:
+const myUrl = new URL('https://example.com:8080/path/page.html?id=123&name=abhi#section1');
+console.log(myUrl);
+
+✅ Output (a URL object):
+URL {
+  href: 'https://example.com:8080/path/page.html?id=123&name=abhi#section1',
+  origin: 'https://example.com:8080',
+  protocol: 'https:',
+  username: '',
+  password: '',
+  host: 'example.com:8080',
+  hostname: 'example.com',
+  port: '8080',
+  pathname: '/path/page.html',
+  search: '?id=123&name=abhi',
+  searchParams: URLSearchParams { 'id' => '123', 'name' => 'abhi' },
+  hash: '#section1'
+}
+
+
+✅ 2. Legacy way: Using url.parse() from the url module
+
+🧠 Difference:
+url.parse() is older, used before URL class was added.
+It’s still valid, but new URL() is the modern standard and safer.
+
+parse(link) ya new URL(link) dono ka output same hota hai
+
+===========================================================================================================
+
+Handling Different HTTP Methods
+-------------------------------
+
+RESTful APIs commonly use different HTTP methods (GET, POST, PUT, DELETE, etc.) to perform different operations on resources.
+
+🔥 1. What are HTTP Methods?
+HTTP methods define the type of action a client wants to perform on a server.
+
+Method	Purpose
+GET	Retrieve data from server
+POST	Send new data to server (create)
+PUT	Update existing data (complete)
+PATCH	Update partial data
+DELETE	Remove data from server
+OPTIONS, HEAD	For metadata / info purposes
+
+✅ 2. Handling HTTP Methods in Node.js (http module)
+
+const server = http.createServer((req,res)=>{
+  if(req.method === 'GET'){
+    res.end('GET request received');
+    } else if (req.method === 'POST') {
+    res.end('POST request received');
+  } else if (req.method === 'PUT') {
+    res.end('PUT request received');
+  } else if (req.method === 'DELETE') {
+    res.end('DELETE request received');
+  } else {
+    res.statusCode = 405;
+    res.end('Method Not Allowed');
+  }
+
+
+1.  test it using crul(command line methods ka use karke post put delete question bhejtey hai)
+  eg curl.exe -X POST http://localhost:3000/user
+
+2.  Option 2: Use Postman
+GUI tool hai, easily request bhej sakte ho:
+Method select karo: POST, PUT, etc.
+URL likho: http://localhost:3000/user
+Click Send
+Response aa jayega.
+
+Postman ek free desktop (aur web-based) tool hai jo aapko APIs test karne me help karta hai — bina browser ya code likhe.

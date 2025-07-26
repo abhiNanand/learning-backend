@@ -1,0 +1,56 @@
+-Middleware is funtion inspect, log, modify, or validate the request.
+-It runs between the request (req) and the response (res) during the lifecycle of an HTTP request.
+-Call next() to pass control to the next middleware or route.
+
+Middleware functions have access to:
+(req, res, next)
+
+🤔 Why Is Middleware Needed?
+Middleware allows you to:
+
+-Centralize common logic
+-Validate data
+-Authenticate users
+-Log requests
+-Handle errors
+-Parse incoming data
+
+🔧 How Middleware Works (Flow Diagram):
+Client Request → [Middleware 1] → [Middleware 2] → [Route Handler] → Response
+
+
+Note: middleware can end request-response cycle. If the current middleware function does not end the request-response cycle, it must call next() to pass control to the next middleware function. Otherwise, the request will be left hanging.
+
+app.get('/',function(req,res,next){
+  next();
+});
+
+function(req,res,next) - this is middleware function.
+
+Starting with Express 5, middleware functions that return a Promise will call next(value) when they reject or throw an error. next will be called with either the rejected value or the thrown Error.
+
+But starting with Express 5, middleware can also return a Promise — and errors are handled automatically.
+
+In Express 5, if a middleware function is async or returns a Promise, and that Promise is rejected (e.g., error thrown), Express automatically calls:
+
+You don’t need to use try...catch manually.
+
+Before (Express 4) Needed try...catch for every async middleware	but now Automatically handles throw or Promise.reject(). Manual error forwarding	Auto next(error).
+
+🧪 Example Comparison:
+❌ Old Way (Express 4):
+
+app.use(async (req, res, next) => {
+  try {
+    await someAsyncFunc();
+    next();
+  } catch (err) {
+    next(err);
+  }
+});
+
+✅ New Way (Express 5):
+app.use(async (req, res, next) => {
+  await someAsyncFunc(); // if error occurs, Express handles it
+});
+

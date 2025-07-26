@@ -1,0 +1,140 @@
+What is Node.js Architecture?
+Node.js uses a single-threaded, event-driven architecture that is designed to handle many connections at once, efficiently and without blocking the main thread.
+
+This makes Node.js ideal for building scalable network applications, real-time apps, and APIs.
+
+Key Characteristics: Non-blocking I/O, event-driven, single-threaded with event loop, asynchronous execution
+
+Node.js Architecture Diagram
+
+ 
+
+---
+
+ 🚀 **Node.js Execution Flow (Step-by-Step)**
+
+ 🧑‍💻 1. User Request Aata Hai
+
+→ Ye request Node.js server tak aayi.
+
+---
+
+🧠 2. Node.js Server Receives the Request
+
+Node.js me likha gaya code (e.g., Express server) request ko accept karta hai.
+
+Ab Node.js check karta hai:
+
+🔹 Synchronous task hai ya
+🔹 Asynchronous / Heavy task hai?
+
+---
+
+ 🔄 3. Agar Synchronous Code Hai
+
+Agar code simple aur fast hai (e.g., string join, math operation):
+
+✅ Event Loop khud handle karta hai immediately.
+→ Ye call stack me chala jata hai aur complete hone ke baad response send ho jata hai.
+
+---
+
+### 🔁 4. Agar Asynchronous/Heavy Task Hai
+
+Jaise:
+
+* File read (`fs.readFile`)
+* Hashing (`crypto.pbkdf2`)
+* Compression (`zlib`)
+* DNS lookup
+
+Tab Node.js is task ko deta hai:
+
+👉 Thread Pool (by `libuv` – default 4 threads)
+
+✅ Ye kaam background me hota hai — event loop ko block nahi karta.
+
+---
+
+📥 5. Event Loop Free Ho Jaata Hai
+
+Jab tak Thread Pool ka kaam complete nahi hota, Event Loop:
+
+* Dusri requests handle karta hai
+* `setTimeout`, `Promise`, aur dusri micro/macro-tasks run karta hai
+
+---
+
+### 📬 6. **Thread Pool Callback Complete Karta Hai**
+
+Jaise hi heavy task complete hota hai:
+
+📤 Uska result ek callback ke through **Callback Queue** me chala jata hai.
+
+---
+
+### 🔄 7. **Event Loop Callback Queue Check Karta Hai**
+
+Event Loop callback queue se callback uthata hai (jab call stack empty ho)
+→ Callback run hota hai (e.g., `console.log("file read done")`)
+
+---
+
+### 📤 8. **Response Sent to User**
+
+Jo bhi final result hai, wo **client/browser** ko bhej diya jata hai
+→ Jaise `res.send(data)` agar Express use kar rahe ho
+
+---
+
+## 💡 Recap (One Line Each):
+
+1. Request aayi →
+2. Node.js ne li →
+3. Synchronous task → call stack me chala gaya → done
+4. Asynchronous task → Thread Pool ko diya
+5. Event Loop free raha, aur dusre kaam karta raha
+6. Thread Pool ne kaam kiya → callback bheja
+7. Event Loop ne callback uthaya
+8. Response user ko diya ✅
+
+---
+
+Agar chaho to iska **diagram** ya ek **real-life analogy** bhi samjha sakta hoon. Batana!
+
+
+--------------------------------
+
+🟢 A. Call Stack
+Yahaan saara synchronous code turant execute hota hai.
+
+🟡 B. Callback Queue (Task Queue)
+Yahaan async tasks ke callback functions jaate hain (e.g., setTimeout, fs.readFile, etc.).
+
+🔵 C. Microtask Queue
+Yahaan jaate hain:
+Promise.then()
+Promise.catch()
+process.nextTick() (⚠️ Iska priority sabse high hota hai!)
+
+Thread Pool
+-----------
+
+Heavy/Blocking operations ko background me process karta hai. jaise web api karta hai browser me.
+🔧 Flow Samjho (Kaise kaam hota hai):
+Client request karta hai (e.g., file read).
+
+Event Loop check karta hai: "Ye kaam simple hai ya heavy?"
+Agar heavy (e.g., fs.readFile) hai → Thread Pool ko de deta hai.
+Jab Thread Pool kaam complete karta hai → callback Event Loop ke Callback Queue me bhej diya jata hai.
+Event Loop us callback ko uthake run karta hai.
+
+🔁 To samjho clearly:
+🔹 Event Loop ka kaam kya hai?
+Event Loop ek infinite loop hota hai jo yeh kaam karta hai:
+Dekhta hai Call Stack empty hai ya nahi.
+Agar empty hai, toh:
+Callback Queue (normal async tasks jaise setTimeout) se task uthata hai.
+Ya Microtask Queue (Promises, process.nextTick) se task uthata hai.
+Utha ke woh task V8 engine ke through Call Stack me bhejne deta hai — khud directly nahi daalta.
+------------------------------------------------------------------------------------------------------------

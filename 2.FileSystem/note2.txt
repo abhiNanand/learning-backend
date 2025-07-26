@@ -1,0 +1,111 @@
+https://dev.to/shanu001x/file-system-nodejs-fs-module-1hg6
+
+1. What is the fs Module?
+Ans: provides api for interacting with files.
+
+Reading file: two ways sync and async.
+
+Async Reading:
+--------------
+fs.readFile('example.txt','utf8',(err,data)=>{
+  if(err){
+    console.error(err);
+    return;
+  }
+  console.log(data);
+});
+'example.txt': The file you want to read.
+Callback Function: Handles the error and the file data.
+2. 'utf8'
+This is the encoding of the file.
+utf8 means:
+-Read the file and return the content as a string.
+-If you don’t specify utf8, you will get a Buffer instead of a string.
+-A Buffer is what Node.js gives you when you read a file without asking for text. Its like array of binary number. 
+ 
+====================================================================================================================
+
+To delete a file, use the unlink method.
+
+# creating a new Directory
+  -------------------------
+
+fs.mkdir('newdir',{recursive:true},(err)=>{});
+
+{ recursive: true } — What it means:
+
+fs.mkdir('a/b/c', { recursive: true }, (err) => {
+    if (err) throw err;
+    console.log('Directories created!');
+});
+Without { recursive: true }:
+You will get an error if a or b doesn’t already exist.
+
+With { recursive: true }:
+Node.js will automatically create all missing directories in the path.
+If the directory already exists, it does not throw an error.
+
+Without { recursive: true }:
+You will get an error if a or b doesn’t already exist.
+
+With { recursive: true }:
+Node.js will automatically create all missing directories in the path.
+If the directory already exists, it does not throw an error.
+
+Why use it?
+To create nested directories in one step.
+To avoid errors if the directory already exists.
+To simplify your code (no need to check if parent directories exist).
+====================================================================================================================
+
+Working with Streams
+--------------------
+🔹 1. What Are Streams?
+streams in nodejs are a way to handle reading or writing data piece by piece, instead of loading everthing in memory at one.
+
+example: watching youtube video:
+instead of downloading the entire video at first we watch it chunk by chunk.
+
+🔹 2. Why Use Streams?
+Especially useful when working with:
+Large files (e.g., logs, media, JSON)
+Data that doesn’t fit in memory
+Efficient memory and CPU usage
+
+
+Reading with streams
+---------------------
+🔹 6. How Chunks Work
+Node reads data in chunks of 64 KB by default.
+
+So a 1 MB file might emit around 16 chunks.
+
+This is great because it:
+
+Reduces memory usage
+
+Allows processing while reading
+---------------------------------------
+
+🔹 What Are Writable Streams?
+Writable streams let you write data chunk by chunk instead of writing everything at once.
+Just like readable streams read in parts, writable streams write in parts.
+
+🔸 Why Use Writable Streams?
+✅ Useful for:
+
+Writing large amounts of data (like logs)
+
+Creating or modifying files without loading full content into memory
+
+Piping data from another stream (like a file download)
+
+=======================================
+
+Promisified fs
+---------------
+🔸 1. Pehle ka Tareeka (Callback-based)
+🔻 Problems:
+Callback hell ho sakta hai (nested callbacks)
+Difficult to handle in big apps
+Less readable and modern

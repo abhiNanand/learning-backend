@@ -1,0 +1,57 @@
+Static files are files that do not change and directly serverd to the client.
+
+These include:
+
+HTML
+CSS
+JavaScript (frontend)
+Images (PNG, JPG, SVG)
+Fonts, PDFs, etc.
+
+To serve static files use express.static build in middleware function in Express.
+Syntax is:
+
+express.static(root,[options]);
+
+root is the directory from where to serve static files.
+for more info about options: https://expressjs.com/en/5x/api.html#express.static 
+
+example:
+to serve images, CSS files, and JavaScript files in a directory named public:
+app.use(express.static('public'));
+
+Now, you can load the files that are in the public directory:
+
+http://localhost:3000/images/kitten.jpg
+http://localhost:3000/css/style.css
+http://localhost:3000/js/app.js
+http://localhost:3000/images/bg.png
+http://localhost:3000/hello.html
+
+✅ Benefits of express.static:
+Simple to serve CSS, images, JS for frontend
+No need to create routes for each file
+
+Agar file public/ folder me hai, toh URL me public/ q nahi likhna padta?"
+
+🔍 Reason:
+When you use this line in Express:
+
+app.use(express.static('public'));
+Ye line Express ko bolta hai ki:
+
+"Jo bhi files public/ folder ke andar hain, unhe direct root (/) se accessible bana do."
+
+====================================================================================================
+Express looks up the files relative to the static directory, so the name of the static directory is not part of the URL.
+To use multiple static assets directories, call the express.static middleware function multiple times:
+
+app.use(express.static('public'))
+app.use(express.static('files'))
+
+===================================================================================
+note:
+app.use('/static', express.static(path.join(__dirname, 'public'))); ye tab use karna hai jb dusre folder se access karna hoga. this is for absolute path. work for all
+
+this is only for relative path. app.use(express.static('public'));
+

@@ -1,0 +1,119 @@
+##Differences between Node.js and the Browser
+
+🔍 What is Node.js and What is a Browser?
+Term	Meaning
+Node.js ek environment hai jo JavaScript ko browser ke bahar – yaani server par chalane deta hai
+🟢 Matlab ab aap JavaScript se server-side kaam bhi kar sakte ho, jaise:
+
+-File read/write karna
+-Database se data lena
+-API banana
+-Login/Signup handle karna
+
+server kya hota hai?
+server vo computer jo serve kar rha. 
+
+Browser (like Chrome, Firefox)	Software used to view websites. It runs JavaScript on the client side (on the user's device).
+ 
+
+3. Built-in Modules/APIs
+Feature	Node.js	                                              Browser
+Has access to	File system, OS, path,             HTTP server, etc.	DOM, fetch, localStorage, alert
+Example	fs.readFile(), http.createServer()	     document.getElementById(), fetch()
+
+
+
+summer
+-----
+| Feature               | Node.js               | Browser                        |
+| --------------------- | --------------------- | ------------------------------ |
+| Runs JavaScript       | ✅                     | ✅                           |
+| Main use              | Backend               | Frontend                       |
+| Access to DOM         | ❌                     | ✅                           |
+| Access to file system | ✅                     | ❌                           |
+| Module system         | CommonJS + ES Modules | ES Modules                     |
+| Global object         | `global`              | `window`                       |
+| Built-in APIs         | File, OS, HTTP, etc.  | DOM, localStorage, alert, etc. |
+| Popular libraries     | Express, Mongoose     | React, jQuery                  |
+
+============================================================================================================
+
+ process.nextTick()
+ ------------------
+its a function in node js that allows us to schedule a callback to be executed after all synchronous operation done, but before the event loop continues.
+
+"Hey, once the current function finishes, immediately run this next."
+
+
+example 
+
+setTimeout(() => {
+  console.log('setTimeout');
+}, 0);
+
+process.nextTick(() => {
+  console.log('nextTick');
+});
+
+console.log('main');
+
+Start
+End
+Inside nextTick
+
+✅ process.nextTick() is executed before any timer or I/O callbacks, but after the current synchronous code.
+❓ Is process.nextTick() synchronous or asynchronous?
+✅ It is asynchronous in behavior but executed before any asynchronous operations, so it feels almost synchronous.
+
+
+ ======================
+
+ Understanding setImmediate()
+ ----------------------------
+it is a function that schedules a callback to be executed after eventloop phase is completed. but settimeout(0) se pele v ho sakta hai baad v.
+It’s similar to setTimeout(fn, 0), but it is more efficient and accurate in Node.js.
+
+setImmediate(() => {
+  console.log('Executed in the next iteration of the event loop');
+});
+
+Note: setTimeout(0) and setImmediate() may interchange order, depending on context (especially in I/O operations).
+
+🧪 Best Use Case:
+Use setImmediate() when you want to:
+Schedule something after the current event loop phase.
+Let the current I/O or other operations finish first.
+Avoid blocking important microtasks like nextTick() or Promises.
+
+
+✅ Example:
+ 
+console.log('Start');
+
+setImmediate(() => {
+  console.log('Inside setImmediate');
+});
+
+setTimeout(() => {
+  console.log('Inside setTimeout 0ms');
+}, 0);
+
+
+Promise.resolve().then(() => {
+  console.log('Inside Promise.then');
+});
+
+process.nextTick(() => {
+  console.log('Inside process.nextTick');
+});
+
+console.log('End');
+Expected Output (most likely):
+
+Start
+End
+Inside process.nextTick
+Inside Promise.then
+Inside setTimeout 0ms
+Inside setImmediate
+ ========================================

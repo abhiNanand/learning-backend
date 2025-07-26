@@ -1,0 +1,105 @@
+The **lifecycle of an HTTP request** refers to the entire journey of a request made by a client (like a browser or Postman) to a server, and how the server processes it and sends back a response.
+
+Here’s a step-by-step breakdown:
+
+---
+
+### 🌀 1. **Client Initiates Request**
+
+* A user enters a URL in the browser or clicks a link.
+* The browser creates an HTTP request.
+* The request includes:
+
+  * HTTP method (GET, POST, etc.)
+  * URL
+  * Headers (e.g., Content-Type, User-Agent)
+  * Optional body (e.g., for POST/PUT)
+
+---
+
+### 🌐 2. **DNS Lookup**
+
+* The domain (like `google.com`) is translated into an IP address using DNS.
+
+---
+
+### 🔗 3. **TCP Connection (and TLS for HTTPS)**
+
+* A TCP connection is established (typically on port 80 for HTTP or 443 for HTTPS).
+* For HTTPS, a **TLS/SSL handshake** occurs for encryption.
+
+---
+
+### 📦 4. **Request Reaches the Server**
+
+* The request is sent to the server's IP address and routed to the appropriate application.
+* The server (like a Node.js/Express app) receives the request.
+
+---
+
+### 🧠 5. **Middleware Processing (in frameworks like Express.js)**
+
+* Middlewares inspect, log, modify, or validate the request.
+
+  * Example: parsing body (body-parser), authentication checks, logging.
+
+---
+
+### ⚙️ 6. **Routing**
+
+* Based on the request URL and method, it matches a specific route handler.
+
+  * For example, `GET /users` goes to `app.get('/users', handler)`.
+
+---
+
+### 🛠️ 7. **Controller / Business Logic**
+
+* The matched route's function executes:
+
+  * Accessing databases
+  * Performing computations
+  * Validating input
+  * Preparing response data
+
+---
+
+### 📤 8. **Server Sends Response**
+
+* A response object is prepared:
+
+  * Status code (200, 404, 500, etc.)
+  * Headers (e.g., Content-Type)
+  * Body (HTML, JSON, etc.)
+* Response is sent back to the client.
+
+---
+
+### 🔁 9. **Client Receives Response**
+
+* The browser or tool receives the response.
+* Browser may:
+
+  * Render HTML
+  * Show error
+  * Execute JavaScript with the data (AJAX/Fetch)
+
+---
+
+### ✅ 10. **Connection Closed or Kept Alive**
+
+* The TCP connection is closed unless `Connection: keep-alive` is set.
+
+---
+
+### Summary Diagram:
+
+```
+Client → DNS → TCP/TLS → Server
+      → Middleware → Route Handler → Response
+      ←------------- HTTP Response --------------
+```
+
+---
+
+Let me know if you want this visualized with an example using **Express.js** or **Postman/FETCH**.

@@ -1,0 +1,38 @@
+Accept input from command line using node js.
+
+✅ 1. using process.argv
+
+index.js
+
+const name = process.argv[2];
+console.log(`hello ${name}`);
+
+to run this
+node index.js Abhishek
+
+so output will  be: Hello Abhishek
+
+🧠 What is process.argv?
+It is an array that holds command line arguments.
+
+process.argv[0]; node path
+process.argv[1];  script file path
+process.argv[2+]; actual arguments
+--------------------------------------------------------------------------------------------------------------------
+
+✅ 2. using readLine
+
+import readLine from 'readLine'
+
+const r1 = readLine.crateInterface({
+  input:process.stdin,
+  output:process.stdout,
+});
+
+r1.question("what is your name?",(name)=>{
+  console.log(name);
+  r1.close();
+});
+--------------------------------------------------------------------------------------------------------------------
+
+✅ 3. Using prompt-sync (optional package, easier syntax)

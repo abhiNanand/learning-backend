@@ -1,0 +1,21 @@
+What does routing mean?
+Routing mean deciding what to do when a request comes to a certain path. 
+how an application responds to client requests for a specific endpoint (URL) and HTTP method (GET, POST, etc.).
+
+route defination take following strucutre.
+
+app.method(path, Handler)
+Where:
+
+app is an instance of express.
+METHOD is an HTTP request method, in lowercase.
+PATH is a path on the server.
+HANDLER is the function executed when the route is matched.
+
+example:
+
+Respond to a PUT request to the /user route:
+
+app.put('/user', (req, res) => {
+  res.send('Got a PUT request at /user')
+})

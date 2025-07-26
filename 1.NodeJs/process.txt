@@ -1,0 +1,35 @@
+process node js ka ek global object hai (global object matlab har jagah accessable rahata hai).
+आपको ये करने देता है:
+
+Command line arguments लेना
+Current working directory पता करना
+Environment variables access करना
+Exit codes handle करना
+Event loop और stdin/stdout को manage करना
+
+🧠 Commonly Used process Properties & Methods:
+
+1. Command-line arguments ka array deta hai.
+
+console.log(process.argv);
+Output:
+[
+  '/path/to/node',
+  '/path/to/app.js',
+  'hello',
+  'world'
+]
+
+2. 2. process.env
+Environment variables access karta hai.
+console.log(process.env.USER);  // Windows: USERNAME
+console.log(process.env.PORT);  // Custom env variable
+
+3. process.cwd()
+Current working directory return karta hai.
+console.log(process.cwd());  // /home/user/project
+
+4. process.exit([code])
+Process ko end karta hai. Default code = 0 (success).
+process.exit(1); // 1 means error
+

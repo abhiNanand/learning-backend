@@ -1,0 +1,98 @@
+Node js file system.
+---------------------
+
+The fs (File System) module in Node.js provides an API for interacting with the file system. It allows you to perform operations such as reading, writing, updating, and deleting files and directories, which are essential for server-side applications and scripts.
+To handle file operations like creating, reading, deleting, etc., Node.js provides an inbuilt module called FS (File System). 
+
+import fs from 'fs';
+
+Uses:
+Read Files
+Write Files
+Append Files
+Close Files
+Delete Files
+
+Key Features
+Asynchronous and Synchronous Methods: Provides both non-blocking and blocking methods for various file operations.
+Error Handling: Includes robust error handling to manage issues such as file not found or permission errors.
+Directory Management: Allows creation, deletion, and listing of directories.
+====================================
+
+fs.open() - create,read,write rile
+fs.readFile() - only read file
+fs.writeFile() - Creates a new file or overwrites if exists
+
+Syntax:
+
+fs.open(path, flags, mode, callback)
+
+Parameters:
+
+path: It holds the name of the file to read or the entire path if stored at other locations.
+
+flags: Flags indicate the behavior of the file to be opened. All possible values are ( r, r+, rs, rs+, w, wx, w+, wx+, a, ax, a+, ax+).
+
+mode: Sets the mode of file i.e. r-read, w-write, r+ -readwrite. It sets to default as readwrite.
+
+err: If any error occurs.
+
+ 
+
+In Node.js, when using `fs.open()` (or its promise-based version `fs.promises.open()`), the **`flags`** parameter specifies how the file should be opened. Here’s a complete explanation of all the flags you mentioned:
+
+---
+
+### 🔹 Read and Write Flags
+
+| Flag    | Meaning                                                                 |
+| ------- | ----------------------------------------------------------------------- |
+| `'r'`   | **Read only**. File must exist.                                         |
+| `'r+'`  | **Read and write**. File must exist.                                    |
+| `'rs'`  | **Synchronous read only**. File must exist. Skips cache for reads.      |
+| `'rs+'` | **Synchronous read and write**. Skips cache for reads. File must exist. |
+
+---
+
+### 🔹 Write and Append Flags
+
+| Flag    | Meaning                                                                                        |
+| ------- | ---------------------------------------------------------------------------------------------- |
+| `'w'`   | **Write only**. Creates the file if it does not exist. **Truncates (clears) it if it exists.** |
+| `'wx'`  | Like `'w'` but **fails if file already exists** (i.e., exclusive write).                       |
+| `'w+'`  | **Read and write**. Creates the file if it doesn't exist, truncates it if it does.             |
+| `'wx+'` | Like `'w+'` but **fails if file already exists**.                                              |
+
+---
+
+### 🔹 Append Flags
+
+| Flag    | Meaning                                                                                          |
+| ------- | ------------------------------------------------------------------------------------------------ |
+| `'a'`   | **Append only**. Opens the file for writing at the end. Creates file if it doesn't exist.        |
+| `'ax'`  | Like `'a'`, but **fails if file exists**.                                                        |
+| `'a+'`  | **Read and append**. Opens the file for reading and writing at the end. Creates file if missing. |
+| `'ax+'` | Like `'a+'`, but **fails if file exists**.                                                       |
+
+---
+
+### ✅ Summary Table
+
+| Flag    | Read | Write | Create if Missing | Truncate if Exists | Error if Exists | Notes                        |
+| ------- | ---- | ----- | ----------------- | ------------------ | --------------- | ---------------------------- |
+| `'r'`   | ✔️   | ❌     | ❌                 | ❌                  | ❌               | File must exist              |
+| `'r+'`  | ✔️   | ✔️    | ❌                 | ❌                  | ❌               | File must exist              |
+| `'rs'`  | ✔️   | ❌     | ❌                 | ❌                  | ❌               | Bypasses OS-level read cache |
+| `'rs+'` | ✔️   | ✔️    | ❌                 | ❌                  | ❌               | Bypasses OS-level read cache |
+| `'w'`   | ❌    | ✔️    | ✔️                | ✔️                 | ❌               | Overwrites if file exists    |
+| `'wx'`  | ❌    | ✔️    | ✔️                | ✔️                 | ✔️              | Exclusive write              |
+| `'w+'`  | ✔️   | ✔️    | ✔️                | ✔️                 | ❌               |                              |
+| `'wx+'` | ✔️   | ✔️    | ✔️                | ✔️                 | ✔️              | Exclusive read/write         |
+| `'a'`   | ❌    | ✔️    | ✔️                | ❌                  | ❌               | Always appends               |
+| `'ax'`  | ❌    | ✔️    | ✔️                | ❌                  | ✔️              | Fails if file exists         |
+| `'a+'`  | ✔️   | ✔️    | ✔️                | ❌                  | ❌               | Read and append              |
+| `'ax+'` | ✔️   | ✔️    | ✔️                | ❌                  | ✔️              |                              |
+
+---
+
+ 

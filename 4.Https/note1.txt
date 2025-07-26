@@ -1,0 +1,73 @@
+https module in Nodejs
+----------------------
+
+this modules allows us to create secure http server and client using SSL/TLS encryption.
+
+🔐 Why https is important:
+-data between client and server is encrypted.
+-Used in production (never use plain http for real users)
+-Required for secure login, payments, APIs, etc.
+-Browsers block certain features (e.g., geolocation) on non-HTTPS sites
+
+=======================================
+
+🛠 Create a Secure Server
+You need:
+-A private key
+-A certificate (can be self-signed or from a Certificate Authority).
+
+Open terminal in your project folder.
+
+Run this command:
+ 
+openssl req -x509 -newkey rsa:2048 -nodes -keyout key.pem -out cert.pem -days 365
+This will generate:
+
+key.pem → Private key
+
+cert.pem → Self-signed certificate
+
+Now use it in your Node.js HTTPS server:
+import https from 'https';
+
+const options = {
+key: fs.readFileSync('key.pem'), 
+cert:fs.readFileSync('cert.pem);
+};
+
+https.createServer(options,(req,res)=>{
+  res.writeHead(200);
+  res.end("hellow secure world);
+}).listen(3000,()=>{
+  console.log("server running on https://localhost:3000);
+});
+
+
+Note: Modern HTTPS uses TLS (Transport Layer Security), which is the successor to SSL (Secure Sockets Layer). The terms are often used interchangeably, but SSL is now considered deprecated.
+
+
+🔐 1. What is a Private Key?
+🧠 Concept:
+A Private Key is a secret file used to encrypt and decrypt data.
+
+It should be kept secure — never shared with anyone.
+
+It is generated as part of a key pair (public key + private key).
+
+📦 In HTTPS:
+Your server uses the private key to prove its identity and to decrypt messages from clients.
+
+📜 2. What is a Certificate?
+🧠 Concept:
+A Certificate contains the public key, and proves the identity of the server to the client (browser).
+
+It is signed by a trusted authority (like DigiCert, Let's Encrypt) or self-signed.
+
+📦 In HTTPS:
+Your server gives the certificate to the client.
+Client checks: "Is this certificate valid? Is this server trustworthy?"
+Certificate contains details like:
+Domain name (e.g., example.com)
+Organization info
+Public key
+Expiry date

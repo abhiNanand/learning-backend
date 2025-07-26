@@ -1,0 +1,93 @@
+In **Node.js**, the **`events`** module allows you to **create, fire, and listen for your own events** — much like event handling in the browser (e.g., `click`, `submit`).
+
+---
+
+### ✅ Basic Concept
+
+* Node.js uses the **Observer pattern**.
+* The core idea is: **an object (EventEmitter)** emits a **named event** that causes **listener functions** (aka handlers) to be called.
+
+---
+
+### ✅ Using `events` Module
+
+Here’s a simple example:
+
+```js
+// Import the events module
+const EventEmitter = require('events');
+
+// Create an emitter object
+const myEmitter = new EventEmitter();
+
+// Attach a listener
+myEmitter.on('greet', () => {
+  console.log('Hello there!');
+});
+
+// Emit the event
+myEmitter.emit('greet');
+```
+
+---
+
+### ✅ Key Methods of `EventEmitter`
+
+| Method                                      | Description                                                |
+| ------------------------------------------- | ---------------------------------------------------------- |
+| `on(event, listener)`                       | Attaches a listener to an event (can fire multiple times). |
+| `once(event, listener)`                     | Attaches a one-time listener (fires only once).            |
+| `emit(event, [args])`                       | Triggers the event and calls all listeners.                |
+| `removeListener(event, listener)` / `off()` | Removes a specific listener.                               |
+| `removeAllListeners(event)`                 | Removes all listeners for an event.                        |
+| `listenerCount(event)`                      | Returns the number of listeners attached.                  |
+
+---
+
+### ✅ Example with Arguments
+
+```js
+const EventEmitter = require('events');
+const myEmitter = new EventEmitter();
+
+myEmitter.on('order', (item, quantity) => {
+  console.log(`Order received: ${quantity} x ${item}`);
+});
+
+myEmitter.emit('order', 'Pizza', 2);
+```
+
+---
+
+### ✅ Real-life Use Cases
+
+* **HTTP server**: `req.on('data')`, `req.on('end')`
+* **Streams**: `readable.on('data')`, etc.
+* **Process events**: `process.on('exit')`, `uncaughtException`, etc.
+* **Custom applications**: Your own events in apps, games, sockets, etc.
+
+---
+
+### ✅ Custom Class with EventEmitter
+
+```js
+const EventEmitter = require('events');
+
+class Logger extends EventEmitter {
+  log(message) {
+    console.log(message);
+    this.emit('messageLogged', { id: 1, msg: message });
+  }
+}
+
+const logger = new Logger();
+
+logger.on('messageLogged', (arg) => {
+  console.log('Listener called with:', arg);
+});
+
+logger.log('Hello World');
+```
+
+---
+ 

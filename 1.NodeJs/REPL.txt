@@ -1,0 +1,87 @@
+
+## 🧠 What is REPL in Node.js?
+
+**REPL** stands for:
+
+> **R**ead – read user input
+> **E**val – evaluate the input
+> **P**rint – print the result
+> **L**oop – loop it back for next input
+
+## it lets you run Node.js JavaScript code directly in the terminal, one line at a time. ##
+
+---
+
+## 🚀 How to Start the Node.js REPL
+
+### ✅ Step 1: Open Terminal (Command Prompt, Bash, etc.)
+
+### ✅ Step 2: Type
+
+ node
+ 
+### ✅ Step 3: You’ll see this prompt:
+
+```
+>
+```
+
+Now you can type any JS/Node expression.
+
+---
+
+## ✅ Example Usage:
+
+ > 2 + 3
+5
+
+> const name = "Abhishek";
+undefined
+
+> name.toUpperCase()
+'ABHISHEK'
+
+> [1, 2, 3].map(x => x * 2)
+[ 2, 4, 6 ]
+```
+
+You can even use:
+
+* `fs` module
+* `require()`
+* Declare variables
+* Define functions
+
+---
+
+## 📦 Built-in REPL commands
+
+| Command  | Description                         |
+| -------- | ----------------------------------- |
+| `.help`  | Show all REPL commands              |
+| `.exit`  | Exit the REPL                       |
+| `.clear` | Clear the REPL context (like reset) |
+| `_`      | Holds the **last result**           |
+
+---
+
+## 🧪 Why use REPL?
+
+* Test small JS code snippets quickly
+* Try out Node.js modules (`fs`, `path`, etc.)
+* Debug and experiment in real time
+
+---
+
+## 🛑 To Exit:
+
+Just type:
+
+ .exit
+ 
+or press:
+
+ Ctrl + C  (twice)
+ 
+ 
+Let me know if you want to try REPL with specific modules like `fs`, `path`, or `http`.

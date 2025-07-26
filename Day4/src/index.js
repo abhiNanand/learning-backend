@@ -31,8 +31,16 @@ import dotenv from "dotenv";
 dotenv.config({
   path: "./env",
 }); // Loads environment variables from .env file
-connectDB();
-
+connectDB()
+.then(()=>{
+  app.listen(process.envPORT || 8000,()=>{
+    console.log(`Server is running at port: ${process.env.PORT}`);
+  });
+})
+.catch((error)=>{
+  console.log("failed",error);
+})
+ 
 
 
 /*
