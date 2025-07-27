@@ -1,0 +1,172 @@
+Types of middleware
+-------------------
+An Express application can use the following types of middleware:
+
+Application-level middleware   (bound for all or specific path)
+Router-level middleware
+Error-handling middleware
+Built-in middleware
+Third-party middleware
+
+1. Application-level middleware
+   -----------------------------
+
+Bind application-level middleware to an instance of the app object by using the app.use() and app.METHOD() functions, where METHOD is the HTTP method of the request that the middleware function handles (such as GET, PUT, or POST) in lowercase.
+
+#They are used for every request or for requests matching specific routes or paths.
+🔧 Syntax:
+app.use(function(req,res,next){next()});
+
+or
+You can also specify a path:
+app.use('/path',function(req,res,next){next()});
+
+
+######Note: To skip the rest of the middleware functions from a router middleware stack, call next('route') to pass control to the next route.
+next('route') will work only in middleware functions that were loaded by using the app.METHOD() or router.METHOD() functions.
+
+example:
+app.get('/user/:id', (req, res, next) => {
+  // if the user ID is 0, skip to the next route
+  if (req.params.id === '0') next('route')
+  // otherwise pass the control to the next middleware function in this stack
+  else next()
+}, (req, res, next) => {
+  // send a regular response
+  res.send('regular')
+})
+
+// handler for the /user/:id path, which sends a special response
+app.get('/user/:id', (req, res, next) => {
+  res.send('special')
+})
+
+==================================================================================================
+
+agar middleware me next() call nahi karte jaise ki isme:
+(req, res, next) => {
+  res.send('regular')
+}
+...to kya koi problem hogi?
+
+🔍 Short Answer:
+Nahi, koi problem nahi hogi, agar aap res.send(), res.end(), ya res.json() use kar rahe ho.
+
+================================================================================================
+
+Here is an example of loading a series of middleware functions at a mount point, with a mount path. It illustrates a middleware sub-stack that prints request info for any type of HTTP request to the /user/:id path.
+
+app.use('/user/:id', (req, res, next) => {
+  console.log('Request URL:', req.originalUrl)
+  next()
+}, (req, res, next) => {
+  console.log('Request Type:', req.method)
+  next()
+})
+
+================================================================================================
+Middleware can also be declared in an array for reusability.
+
+function logOriginalUrl (req, res, next) {
+  console.log('Request URL:', req.originalUrl)
+  next()
+}
+
+function logMethod (req, res, next) {
+  console.log('Request Type:', req.method)
+  next()
+}
+
+const logStuff = [logOriginalUrl, logMethod]
+app.get('/user/:id', logStuff, (req, res, next) => {
+  res.send('User Info')
+})
+
+================================================================================================
+
+
+
+🔹 What is Router-Level Middleware?
+Router-level middleware works just like application-level middleware, but is bound to an instance of express.Router() instead of the app itself.
+
+example:
+--------
+const express = require('express');
+const app = express();
+const router = express.Router();
+
+// Middleware on the router
+router.use((req, res, next) => {
+  console.log('Router-level middleware triggered');
+  next();
+});
+
+// Route inside the router
+router.get('/test', (req, res) => {
+  res.send('Router-level route hit');
+});
+
+// Register router in main app
+app.use('/api', router); // mounts router on /api
+
+app.listen(3000);
+
+
+🆚 app = express() vs router = express.Router()
+| Feature                             | `app = express()`                          | `router = express.Router()`                          |
+| ----------------------------------- | ------------------------------------------ | ---------------------------------------------------- |
+| 🔧 What it is                       | Main Express application                   | Mini or modular sub-application                      |
+| 🧠 Purpose                          | Bootstraps the whole app                   | Organizes/group routes into modular pieces           |
+| 📁 Used for                         | Setting up global middleware, routes, etc. | Setting up route-specific middleware or grouping     |
+| 🔄 Can use `.use()`, `.get()` etc.? | ✅ Yes                                      | ✅ Yes                                                |
+| 🔗 Mounting                         | You start the server from `app.listen()`   | You mount routers **into** the app using `app.use()` |
+| 📌 Example Usage                    | `app.get('/', handler)`                    | `router.get('/users', handler)`                      |
+
+
+===================================================================================================
+
+Error Handling Middleware
+-------------------------
+take four argumant (err,req,res,next); Even if you don’t need to use the next object, you must specify it to maintain the signature.Otherwise, the next object will be interpreted as regular middleware and will fail to handle errors.
+We define it as same way as other middleware other than three arugument.
+app.use((err, req, res, next) => {
+  console.error(err.stack)
+  res.status(500).send('Something broke!')
+})
+Ye middleware sirf tab call hota hai jab koi error next(err) ke through pass kiya jata hai.
+
+example 2:
+----------
+
+const express = require('express');
+const app = express();
+
+// Normal Route
+app.get('/', (req, res) => {
+  res.send('Hello World!');
+});
+
+// Route that throws an error
+app.get('/error', (req, res, next) => {
+  const err = new Error('Something went wrong!');
+  next(err); // Pass error to the error-handling middleware
+});
+
+// Error Handling Middleware (should come last)
+app.use((err, req, res, next) => {
+  console.error('Error:', err.message);
+  res.status(500).send('Internal Server Error!');
+});
+
+app.listen(3000, () => {
+  console.log('Server running on port 3000');
+});
+====================================================================================================
+
+Built-in middleware
+-------------------
+
+📋 List of Common Built-in Middleware:
+ express.static()	Static files serve karta hai (images, CSS, JS, etc.)
+express.json()	JSON data ko parse karta hai (request body ke liye)
+express.urlencoded()	Form data ko parse karta hai (URL-encoded bodies ke liye)

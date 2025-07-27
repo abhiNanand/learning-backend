@@ -31,8 +31,6 @@ server.listen() makes the server listen on the specified port (3000 in this case
 Working with HTTP Headers
 --------------------------
 
-
-
 HTTP headers let you send additional information with your response.
 
 The res.writeHead() method is used to set the status code and response headers.

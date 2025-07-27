@@ -79,6 +79,7 @@ import  fs from 'fs';
 //   }
 //   console.log('files in directory:',files);
 // });
+// isme array ke adher next jo folder hai uska naam rahata hai. 
 
 //Deleting a Directory
 //this one is deprecated
@@ -112,7 +113,7 @@ import  fs from 'fs';
 //     return;
 //   console.log("copied");
 // });
-
+//file2.txt me copy karta hai.
 
 //working with streams
 

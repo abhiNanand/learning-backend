@@ -1,7 +1,7 @@
 What is Node.js Architecture?
-Node.js uses a single-threaded, event-driven architecture that is designed to handle many connections at once, efficiently and without blocking the main thread.
+Node.js uses a single-threaded architecture that is designed to handle many operations at once, efficiently and without blocking the main thread.
 
-This makes Node.js ideal for building scalable network applications, real-time apps, and APIs.
+This makes Node.js ideal for building scalable applications, real-time apps, and APIs.
 
 Key Characteristics: Non-blocking I/O, event-driven, single-threaded with event loop, asynchronous execution
 
@@ -33,12 +33,8 @@ Ab Node.js check karta hai:
  🔄 3. Agar Synchronous Code Hai
 
 Agar code simple aur fast hai (e.g., string join, math operation):
-
-✅ Event Loop khud handle karta hai immediately.
 → Ye call stack me chala jata hai aur complete hone ke baad response send ho jata hai.
-
 ---
-
 ### 🔁 4. Agar Asynchronous/Heavy Task Hai
 
 Jaise:
@@ -50,7 +46,7 @@ Jaise:
 
 Tab Node.js is task ko deta hai:
 
-👉 Thread Pool (by `libuv` – default 4 threads)
+👉 Thread Pool ko (by `libuv` – default 4 threads)
 
 ✅ Ye kaam background me hota hai — event loop ko block nahi karta.
 
@@ -84,7 +80,6 @@ Event Loop callback queue se callback uthata hai (jab call stack empty ho)
 
 Jo bhi final result hai, wo **client/browser** ko bhej diya jata hai
 → Jaise `res.send(data)` agar Express use kar rahe ho
-
 ---
 
 ## 💡 Recap (One Line Each):
@@ -97,11 +92,6 @@ Jo bhi final result hai, wo **client/browser** ko bhej diya jata hai
 6. Thread Pool ne kaam kiya → callback bheja
 7. Event Loop ne callback uthaya
 8. Response user ko diya ✅
-
----
-
-Agar chaho to iska **diagram** ya ek **real-life analogy** bhi samjha sakta hoon. Batana!
-
 
 --------------------------------
 

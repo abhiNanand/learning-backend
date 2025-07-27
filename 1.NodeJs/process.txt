@@ -12,6 +12,7 @@ Event loop और stdin/stdout को manage करना
 1. Command-line arguments ka array deta hai.
 
 console.log(process.argv);
+agar input hai: node app.js hello world
 Output:
 [
   '/path/to/node',

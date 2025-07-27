@@ -59,7 +59,7 @@ console.log('main');
 
 Start
 End
-Inside nextTick
+nextTick
 
 ✅ process.nextTick() is executed before any timer or I/O callbacks, but after the current synchronous code.
 ❓ Is process.nextTick() synchronous or asynchronous?
@@ -116,4 +116,6 @@ Inside process.nextTick
 Inside Promise.then
 Inside setTimeout 0ms
 Inside setImmediate
+
+sare higher priority wale asynchronous task complete ho jate hai tb ye execuete hota hai. jaise setTimeout 0 hota hai. 
  ========================================
