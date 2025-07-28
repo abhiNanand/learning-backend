@@ -10,9 +10,12 @@ app.get('/',(req,res)=>{
 });
 
 //2. send json
-const data = { "name": "Abhishek", "age": 22 }
+const data = { "name": "Abhishek", "age": 22, imageUrl:'http://localhost:3000/image/pic1.jpeg' }
 app.get('/about',(req,res)=>{
 res.json(data);
 });
 
+
+//3. send image
+app.use(express.static('public'));
 app.listen(3000,()=>console.log("server running on http://localhost:3000"));

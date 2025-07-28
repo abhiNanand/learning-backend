@@ -27,3 +27,26 @@ Update your index.js or app.js like this:
 
 import cors from 'cors';
 app.use(cors()); // ✅ This enables CORS for all origins
+
+==========================================================================================
+how to send post request from frontend.
+
+fetch('http://localhost:3000/products', {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify({
+    id: 3,
+    name: 'Pencil'
+  })
+})
+
+==============================================================================================
+
+app.use(express.json());
+🔍 What it means:
+“Agar koi request body me JSON data bheje (jaise POST, PUT, PATCH), to us data ko automatically JavaScript object me convert kar do taaki hum usse req.body ke through access kar saken.”
+
+200 OK	Request सई तरीके से पूरी हो गई	जब कोई resource read, delete, update आदि हो गया हो
+201 Created   	नई चीज़ बनाई गई	जब आप POST request से नया data create करते हो
