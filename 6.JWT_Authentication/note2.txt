@@ -33,3 +33,4 @@ console.log(token);
    The jwt.verify() method checks if the provided token is valid using the secret key.
    
 
+login karne pr jo token mil rha hai usko bhej kr koi important information le saktey hai. 

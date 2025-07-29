@@ -1,0 +1,124 @@
+XSS (Cross-Site Scripting) is a type of security vulnerability commonly found in web applications. It allows attackers to inject malicious scripts (usually JavaScript) into content that other users will see. These scripts run in the victim’s browser and can be used to steal sensitive information, such as cookies, session tokens, or even perform actions on behalf of the user.
+The attacker’s input is read from the DOM
+
+Use HTTP-only Cookies
+Store tokens like JWT in HTTP-only cookies so JavaScript cannot access them.
+
+//send token in cookies
+  ---------------------
+ Why cookies instead of localStorage?**
+
+* `localStorage` me token browser ke JavaScript se accessible hota hai → ❌ XSS attack ka risk.
+* `HTTP-only cookies` me token browser ke JavaScript se **access nahi hota**, sirf HTTP requests ke sath backend ko bhej diya jata hai → ✅ More secure.
+
+✅ Step-by-Step: JWT Token in HTTP-Only Cookie
+
+ 🔧 Backend (Express) Setup:
+ 1. Install cookie-parser
+npm install cookie-parser
+
+2. Express app me setup karo**
+
+import express from 'express';
+import cors from 'cors';
+import cookieParser from 'cookie-parser';
+import jwt from 'jsonwebtoken';
+
+const app = express();
+app.use(express.json());
+app.use(cookieParser());
+
+// CORS with credentials allowed
+app.use(cors({
+  origin: 'http://localhost:5173', // frontend URL
+  credentials: true
+}));
+
+const SECRET = "ABHISHEK";
+🔐 3. Login route – token cookie me bhejna**
+app.post('/login', (req, res) => {
+  const { id, password } = req.body;
+
+  // Dummy login
+  if (id === 'admin' && password === '123') {
+    const token = jwt.sign({ id }, SECRET, { expiresIn: '1h' });
+
+    // Send token as HTTP-only cookie
+    res.cookie('token', token, {
+      httpOnly: true,
+      secure: false, // true in production with https
+      sameSite: 'Lax',
+      maxAge: 3600000 // 1 hour
+    });
+
+    res.json({ message: "Login successful" });
+  } else {
+    res.status(401).json({ message: 'Invalid credentials' });
+  }
+});
+ 
+  🔐 4. **Protected Route – cookie se token verify**
+
+ function authenticateToken(req, res, next) {
+  const token = req.cookies.token;
+
+  if (!token) {
+    return res.status(401).json({ message: 'No token found' });
+  }
+
+  try {
+    const decoded = jwt.verify(token, SECRET);
+    req.user = decoded;
+    next();
+  } catch (err) {
+    return res.status(403).json({ message: 'Invalid or expired token' });
+  }
+}
+
+app.get('/protected', authenticateToken, (req, res) => {
+  res.json({ message: `Welcome ${req.user.id}` });
+});
+ 
+ 
+
+  🚀 Frontend (React) Side:
+
+  🔸 Login fetch request with cookie:
+
+ await fetch('http://localhost:3000/login', {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify({ id: 'admin', password: '123' }),
+  credentials: 'include'  // ⚠️ Must add this to include cookie
+});
+ 
+  🔸 Protected API call with cookie:
+
+ await fetch('http://localhost:3000/protected', {
+  method: 'GET',
+  credentials: 'include'  // ⚠️ Important to send cookie
+});
+ 
+ 
+
+## 🧪 Test karne ke liye:
+
+1. Login karo → token cookie me store ho jaayega.
+2. `/protected` route par call bhejo → backend verify karega.
+3. Cookie Chrome ke **Application > Storage > Cookies** section me dikhega.
+
+ 
+  ✅ Bonus: Logout Route
+
+ app.post('/logout', (req, res) => {
+  res.clearCookie('token');
+  res.json({ message: 'Logged out successfully' });
+});
+ 
+---
+
+====================================================================================================
+
+

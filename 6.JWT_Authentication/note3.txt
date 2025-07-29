@@ -1,0 +1,55 @@
+left part in jwt
+----------------
+
+✅ 1. Token ko Client ke Cookies me Store karna (instead of localStorage)
+LocalStorage easily accessible hota hai (XSS attack se unsafe hota hai).
+Isliye HTTP-only cookies me token store karna secure method hai.
+Express me res.cookie() ka use karke token bhej sakte ho.
+Frontend me credentials ke sath fetch request bhejna hota hai (credentials: 'include').
+
+✅ 2. Refresh Token System
+Access token chhota duration ka hota hai (1h).
+Jab expire ho jaye, refresh token se naya token milta hai.
+Isse user ko baar-baar login nahi karna padta.
+Flow:
+Login → Access Token + Refresh Token
+Access Token expires → Frontend sends refresh token → New access token generated.
+
+✅ 3. Logout Flow:
+Logout karne pr:
+Token ko frontend se delete karo.
+Agar refresh token system hai to server-side pr bhi blacklist ya delete karo.
+Logout ke baad user ko home/login page pr redirect karo.
+
+✅ 4. Role-Based Access Control (RBAC):
+JWT me user ke saath role bhi encode karte hain.
+
+jwt.sign({ id: user.id, role: 'admin' }, SECRET, ...)
+Fir backend ke protected routes me ye check karte ho:
+
+if (req.user.role !== 'admin') return res.status(403).send('Access Denied');
+✅ 5. Best Practices:
+Secret key ko .env file me rakho.
+jsonwebtoken me expiresIn ka use karna important hai.
+Passwords ko store karne se pehle hash karo using bcrypt.
+
+✅ 6. Frontend Token Expiry Handling:
+Token expire hone ke baad automatically logout ya refresh system trigger karna chahiye.
+Token decode karne ke liye jwt-decode library use kar sakte ho frontend me:
+
+import jwt_decode from "jwt-decode";
+const decoded = jwt_decode(token);
+console.log(decoded.exp);
+✅ 7. Common Error Handling:
+Token missing, invalid format, expired token → sabke liye meaningful response bhejna.
+
+401 (unauthorized), 403 (forbidden), 400 (bad request), etc. sahi status code use karo.
+Agar tum ye sab kar lete ho to tum JWT authentication flow ke real-world ready developer ban jaoge 💪
+Batao kis topic se start karna chahoge next?
+Cookies wala system?
+Refresh token system?
+RBAC (Role-based)?
+ya JWT ke alawa ab backend ke aur topics pe move karna hai?
+
+
+
