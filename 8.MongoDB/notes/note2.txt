@@ -1,0 +1,91 @@
+in cmd:
+mongosh
+
+test> show dbs
+admin   40.00 KiB
+config  12.00 KiB
+local   40.00 KiB
+
+-This is the list of database present on our server.
+-The test> is your current database prompt, which means you're currently inside the test database (MongoDB sets this as default until you switch).
+
+🗃️ What are these default databases?
+1. Admin: Stores admin-level info like user accounts and roles (used in authentication/authorization).
+
+2.config: यह MongoDB के internal configuration के लिए होता है (cluster settings, sharding info आदि)।
+
+3. Database replication is the process of copying and distributing data and database objects from one database (the "source" or "primary") to one or more other databases (the "replicas" or "subscribers")
+
+
+Difference between config and local
+-----------------------------------
+
+
+🔄 Difference between config and local in MongoDB:
+Feature / Point	config database	local database
+🔧 Purpose	Sharding aur cluster ke configuration ka data rakhta hai	Local server (node) ka data rakhta hai jaise logs aur replication info
+🌐 Used in	Mostly in sharded cluster setups	Har MongoDB instance me hota hai, even in single server setup
+🔁 Replicated?	Haan, yeh replica sets aur clusters ke beech replicate hota hai	Nahi, yeh replicate nahi hota, har server pe alag hota hai
+📦 Contains	Shards, chunks, balancer info, cluster metadata	Oplog (replication ke liye), startup logs, system.profile, etc.
+🔧 Kis kaam ke liye?	MongoDB cluster ko manage karne ke liye	Server ke local tasks jaise replication, logs
+🛠️ User Use	Developers isme manually kaam nahi karte, sirf admin level pe kabhi-kabhi zarurat padti hai	Normally koi bhi user isme kuch change nahi karta.
+
+
+=====================================================================================================
+Database replication is the process of copying and distributing data and database objects from one database (the "source" or "primary") to one or more other databases (the "replicas" or "subscribers")
+
+🔹 1. Instance kya hota hai?
+Instance matlab ek MongoDB server jo chal raha ho.
+Jab tu mongod command chalata hai, to ek MongoDB instance start hota hai.
+
+👉 Socho ek instance = ek MongoDB machine/server.
+
+🔹 2. Replica / Replication kya hota hai?
+Replication ka matlab hai ek data ki copy ko multiple servers pe maintain karna.
+
+🧠 Why?
+
+Agar ek server down ho jaye, to doosra server data de sake — backup aur high availability ke liye.
+
+🪄 Real life example:
+
+Socho ek dukaan hai jahan ek register me saara maal likha hai. Agar wo register jal gaya to kya hoga?
+Agar us register ki 2-3 copy aur bani ho dusre jagah, to data safe hai.
+Yehi hai replication.
+
+🔹 3. Replica Set kya hota hai?
+Replica set ek group hota hai MongoDB servers ka jo ek dusre ka copy rakhte hain (master-slave system).
+-Ek hota hai Primary
+-Baaki hote hain Secondary
+-Primary me likhne ka kaam hota hai, secondary me sirf reading ya backup.
+
+🔹 4. Cluster kya hota hai?
+Cluster matlab ek group of MongoDB servers jo milke kaam karte hain — chahe wo replication ho ya sharding.
+
+Socho ki ek team of servers milke data sambhal rahi hai. Us team ko cluster bolte hain
+
+🔹 5. Sharding kya hota hai?
+Jab aapke paas bahut zyada data ho, tab aap us data ko multiple MongoDB servers pe tod tod ke rakhte ho — is process ko sharding kehte hain.
+
+🧠 Why?
+
+Ek hi server pe sab data rakhna slow aur heavy ho jata hai
+Toh data ko alag-alag servers (shards) me divide karte hain
+
+
+✅ Ek Chhoti Summary Table:
+| Term            | Simple Meaning                                           |
+| --------------- | -------------------------------------------------------- |
+| **Instance**    | Ek chalti hui MongoDB server                             |
+| **Replication** | Data ki copy banana dusre servers pe                     |
+| **Replica Set** | Ek group of servers jo ek dusre ka data copy karte hain  |
+| **Cluster**     | Serveron ka group jo milke kaam karta hai                |
+| **Sharding**    | Bahut bade data ko tod tod ke multiple servers pe rakhna |
+=======================================================================================================
+
+
+To use/switch any database:
+in cmd:
+use DatabaseName
+
+show collection - to show collection insice a database

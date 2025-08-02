@@ -1,0 +1,43 @@
+What is open source?
+It means code are availabe for public to use modify and distribute.
+
+Document oriented ?
+It means stores data as documents rather that tables(likes in sql database).
+
+What is NOsql?
+= No sql means No only sql. It refers to non relational database system that:
+- stores data in documents, key-valuepair, graph or wide-columns.
+- it is schema less means we do not need to define structre in  advance. 
+
+✅ Comparison with SQL:
+SQL: Data in tables and rows.
+NoSQL: Data in documents (JSON/BSON), more flexible.
+==============================================================================================
+
+What is BSON format?
+-It stands for binary json. It is binary encoded fomat use to store documents.
+-It's similar to JSON but supports more data types (like Date, ObjectId) and is more efficient for storage and scanning.
+
+{ "name": "Abhishek" }
+✅ Internally in BSON: It looks similar, but in binary and supports extra types like ObjectId.
+
+==============================================================================================
+
+What is MongoDb?
+MongoDb is open-source, document oriented nosql database used in modern web and mobile apps. 
+Stores data in BSON format. 
+
+🔹 Why do we need MongoDB?
+MongoDB is needed when:
+- we deal with large and unstrucutred data.
+- fast development and frequent updates. 
+- You want to scale horizontally (add more servers easily).
+==================================================================================================
+SQL vs Document Databases
+-------------------------
+
+
+===================================================================================================
+MongoDB Hello World Example
+---------------------------
+1. insert simple document using into database using MongoDb Nodejs driver.  

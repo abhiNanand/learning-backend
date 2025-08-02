@@ -1,3 +1,0 @@
-Data Modeling of ecommerce and hospital management.
-
-file name is product.models.js - .modles laganey se kuch hota nhi hai bas thora professional lagta hai.

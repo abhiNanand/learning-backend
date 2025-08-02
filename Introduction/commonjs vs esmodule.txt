@@ -1,1 +1,0 @@
-https://www.syncfusion.com/blogs/post/js-commonjs-vs-es-modules

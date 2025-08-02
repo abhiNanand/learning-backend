@@ -1,0 +1,79 @@
+Quick Start:
+------------
+
+✅ First, what is Mongoose?
+Mongoose is an ODM (Object Data Modeling) library for MongoDB and Node.js.
+
+It helps you:
+-Define a schema for your documents (structure).
+-Interact with MongoDB using models in a clean, structured way.
+
+What is Schema?
+Schema defines the type and structure of a data.
+
+===========================================================
+npm i mongoose 
+
+const mongoose = require('mongoose');
+
+//connect to test database: 
+ async function main(){
+  try{
+await mongoose.connect(' mongodb://127.0.0.1:27017/text');
+console.log("Mongose connected);
+  }
+  catch{
+console.log(error);
+  }
+  
+ }
+ =======================================================
+
+ // deine schema;
+
+ const studentSchema = new mongoose.Schema({
+  name: String
+ });
+
+This means: in the students collection, each document should have a name field of type String.
+But just defining the schema doesn’t connect it to the database yet.
+
+
+ ========================================================
+
+ compiling schema to a model 
+
+ const Student = mongoose.model('Student',studentSchema);
+
+ This compiles the schema into a model, which is a class you can use to interact with the collection.
+ =======================================================
+
+ ✅ After compiling, you can use Student model to:
+
+ const newStudent = new Student({name:"Abhishek Anand"});
+ console.log(newStudent.name);
+ await newStudent.save(); //Each document can be saved to the database by calling its save method. 
+
+ // Find all students
+const all = await Student.find();
+console.log(all);
+
+===========================================================
+// Add a method to the schema
+studentSchema.methods.sayHello = function () {
+  console.log(`Hi, my name is ${this.name}`);
+};
+const Student = mongoose.model("Student", studentSchema);
+// Usage:
+const s1 = new Student({ name: "Abhishek", age: 23 });
+s1.sayHello();  // Output: Hi, my name is Abhishek
+===========================================================
+
+// Filter students with name "Abhishek"
+const studentsNamedAbhishek = await Student.find({ name: "Abhishek" });
+
+console.log(studentsNamedAbhishek);
+
+===========================================================
+We created a schema, added a custom document method, saved and queried in mongoDB using mongoose. 
+============================================================

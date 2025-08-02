@@ -1,0 +1,58 @@
+🟢 Step 1: MongoDB Installer Download karo
+Visit this site: https://www.mongodb.com/try/download/community
+Select:
+Version: Current (latest)
+Platform: Windows
+Package: MSI
+Click Download
+
+🟢 Step 2: MongoDB Install karo
+Downloaded .msi file ko double click karo.
+
+Choose Complete setup.
+
+Check karo option:
+✅ "Install MongoDB as a Service"
+✅ "Run service as Network Service user"
+
+Finish installation.
+
+🟢 Step 3:
+add bin to path. 
+and check in cmd mongod --version
+
+=======
+
+iske baad mongosh download karna hai. 
+uske v path me add karn dena hai.
+C:\Program Files\mongosh
+check in cmd mongosh --version
+
+
+=====================================================================================================
+What is mongod?
+-Ye hai MongoDB ka server software jo background me chalta hai.
+-Ye databases ko manage karta hai, read/write requests handle karta hai.
+-Client (like mongosh or Compass) se request leke database access karwata hai.
+-🔁 Hamesha chalu rehta hai. Service ya process ke form me chalta hai, jaise: net start MongoDB.
+
+commands
+--------
+mongod - Ye command MongoDB server ko start karti hai.
+
+
+What is mongos?
+-	Ye ek interactive command-line shell hai jisse tum MongoDB server se baat karte ho.
+- Tumhare queries (like show dbs, insert, find) ko MongoDB server ko bhejta hai.
+- Ye user aur mongod ke beech ek bridge hai.
+- CLI (command-line interface) jisme tum queries likhte ho.
+
+| Item            | Role                                            |
+| --------------  | ----------------------------------------------- |
+| 🏢 `mongod`     | Ek server office (jahan data stored hai)        |
+| 🧑‍💻 `mongosh`    | Ek customer jo jaake office me data poochta hai |
+
+| Command   | Role                       | Use                                       |
+| --------- | -------------------------- | ----------------------------------------- |
+| `mongod`  | Server (background daemon) | Start MongoDB server                      |
+| `mongosh` | Shell/Client               | Connect to MongoDB server and run queries |

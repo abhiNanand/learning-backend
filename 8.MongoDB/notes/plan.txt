@@ -1,0 +1,78 @@
+poora MongoDB nahi padhna hota — sirf web development mein kaam aane wale topics padhne hote hain. Phir uske baad Mongoose start karna sahi hota hai.
+
+🔥 Step-by-Step Plan for MongoDB (Web Developer ke liye)
+✅ 1. MongoDB Basics
+What is MongoDB?
+NoSQL vs SQL
+BSON (binary JSON)
+
+✅ 2. Installation and Setup
+MongoDB install on Windows
+
+MongoDB Compass (GUI tool)
+
+mongod aur mongo commands
+
+✅ 3. CRUD Operations
+(Isko achhe se practice karna hai)
+
+Create: insertOne(), insertMany()
+
+Read: find(), findOne(), queries with conditions
+
+Update: updateOne(), updateMany(), $set
+
+Delete: deleteOne(), deleteMany()
+
+✅ 4. Important Query Operators
+Comparison: $eq, $ne, $gt, $lt
+
+Logical: $and, $or, $not
+
+Array: $in, $nin, $all, $size
+
+✅ 5. Indexes & Projections (Basic knowledge)
+Index kya hota hai?
+
+Projections: show/hide fields in result
+
+✅ 6. MongoDB with Node.js
+Connect MongoDB with Node using mongodb driver (MongoClient)
+
+Create simple app to do CRUD from Node.js
+
+✅ Uske baad Mongoose start karo
+Mongoose ek ODM (Object Data Modeling) library hai jo MongoDB ko aur easy banata hai.
+
+Mongoose ke Topics:
+Connection setup
+
+Schema define karna
+
+Models banana
+
+CRUD using Mongoose
+
+Validations
+
+Relationships (ref + populate)
+
+✅ Recommended Learning Order:
+markdown
+Copy
+Edit
+1. MongoDB basics (Compass ya CLI dono se)
+2. CRUD deeply + filter/query operators
+3. MongoDB with Node.js using `MongoClient`
+4. Then, switch to Mongoose
+Agar chaho toh main tumhare liye ek daily schedule bhi bana sakta hoon (e.g. 5-day or 7-day MongoDB plan). Bolo toh?
+
+
+
+
+
+
+
+
+
+Ask ChatGPT

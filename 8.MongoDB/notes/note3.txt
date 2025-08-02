@@ -1,0 +1,16 @@
+Connecting MongoDb to node. 
+1. run mongodb: mongosh in cmd
+2. it is running at:   mongodb://127.0.0.1:27017/?directConnection=true&serverSelectionTimeoutMS=2000&appName=mongosh+2.5.6
+3. mongo db se nodejs connect karne ke leye hame ek packages chaheye hoga mongooes. 
+   so in terminal vs code. 
+   npm i moongoose
+Now, 
+const moongoose = require('moongoose');
+
+4. Moongoose kaise kaam karta hai.
+   -sabse pele ek schema hota hai.(means we define a structure)
+   -ish schema ko use karke ek model banatey hai.
+   -using this model we do crud operations. 
+    
+
+=====================================================================================================
