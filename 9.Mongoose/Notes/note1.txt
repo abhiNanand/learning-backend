@@ -77,3 +77,8 @@ console.log(studentsNamedAbhishek);
 ===========================================================
 We created a schema, added a custom document method, saved and queried in mongoDB using mongoose. 
 ============================================================
+Why Learn Mongoose?
+-Simplifies mongoDB operations.
+-Reduce biolerplate code from database interaction.
+-Supports middleware for pre/post operations.
+-Well-suited for Node.js applications.

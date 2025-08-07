@@ -88,4 +88,19 @@ To use/switch any database:
 in cmd:
 use DatabaseName
 
-show collection - to show collection insice a database
+show collection - to show collection insice a database.
+
+test> show collections
+students
+test> db.students.find({});  jo jo data studetns in insert keya hai vo show ho jayega. 
+
+{} - ye emtpy means for all. 
+===================================================================================================
+
+Change or Create a Database
+You can change or create a new database by typing use then the name of the database.
+Example
+Create a new database called "blog":
+use blog
+
+

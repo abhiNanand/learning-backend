@@ -7,6 +7,8 @@ Connecting MongoDb to node.
 Now, 
 const moongoose = require('moongoose');
 
+mongoose.connect("mongodb://127.0.0.1:27017/test").then(()=>console.log("MongoDb connected")).catch((err)=>console.log("MongoDb connection Error:",err));
+
 4. Moongoose kaise kaam karta hai.
    -sabse pele ek schema hota hai.(means we define a structure)
    -ish schema ko use karke ek model banatey hai.

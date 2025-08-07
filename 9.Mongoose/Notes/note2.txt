@@ -1,0 +1,172 @@
+Mongoose connects to a local MongoDB database using mongoose.connect().
+
+Types to give in schema:
+String,
+Number,
+Boolean,
+Date,
+Array, etc;
+
+Creating a schema
+-----------------
+const schema = new mongoose.Schema();
+
+Creating a model
+----------------
+mongoose.model('modelName',schema);
+
+Note: By default, Mongoose adds an _id property to your schemas.You can also overwrite Mongoose's default _id with your own _id.
+
+const schema = new Schema({
+  _id: Number // <-- overwrite Mongoose's default `_id`
+});
+Mongoose will refuse to save a top-level document that doesn't have an _id.
+
+=================================================================================================
+
+1. Instance Methods : mongoose ke andher v function daal saktey hai.
+-------------------
+
+const userSchema = new mongoose.Schema({
+  firstName: String,
+  lastName: String,
+  email: String
+});
+
+userSchema.methods.getfullName = function(){
+  return this.firstName+' '+this.lastName;
+}
+
+export const User = mongoose.model("User",userSchema);
+
+🔹 How to Use:
+---------------
+const user = await User.findById("someId");              //finding document that match with that id.
+console.log(user.getFullName());
+
+Instance method me pehle hum document find karte hai ID(ya ksi chez se) se fir function call karte hai.
+===================================================================================================================================
+Static methods - isme document dhundney ki jarurat nhi partey hai ye function pure model pr laga hai unlike instaneous funtion jo sirf document pr lagta hai. 
+
+example: yha model matlab pura array ho gya, aur document matlab array ke index pr jo value hai vo ek document hua. 
+
+userSchema.statics.findbyEmail = function(email){
+  return this.findOne({ email });
+}
+
+some more examples. 
+Sure! Here's a list of **more useful and common examples of `statics` methods** you can define on a Mongoose schema, just like your `findByEmail` one.
+
+---
+
+### ✅ 1. Find user by full name
+
+```js
+userSchema.statics.findByFullName = function (firstName, lastName) {
+  return this.findOne({ firstName, lastName });
+};
+```
+
+---
+
+### ✅ 2. Get all users with a given domain in their email
+
+```js
+userSchema.statics.findByEmailDomain = function (domain) {
+  return this.find({ email: new RegExp(`@${domain}$`, 'i') });
+};
+```
+
+---
+
+### ✅ 3. Count users with a specific first name
+
+```js
+userSchema.statics.countByFirstName = function (firstName) {
+  return this.countDocuments({ firstName });
+};
+```
+
+---
+
+### ✅ 4. Delete user by email
+
+```js
+userSchema.statics.deleteByEmail = function (email) {
+  return this.findOneAndDelete({ email });
+};
+```
+
+---
+
+### ✅ 5. Get all users sorted by first name
+
+```js
+userSchema.statics.getAllSortedByFirstName = function () {
+  return this.find().sort({ firstName: 1 }); // ascending
+};
+```
+
+---
+
+### ✅ 6. Update user by email
+
+```js
+userSchema.statics.updateByEmail = function (email, updateData) {
+  return this.findOneAndUpdate({ email }, updateData, { new: true });
+};
+```
+
+---
+
+### ✅ 7. Check if an email exists
+
+```js
+userSchema.statics.emailExists = async function (email) {
+  const count = await this.countDocuments({ email });
+  return count > 0;
+};
+```
+
+---
+
+### ✅ 8. Get users created in the last X days (if your schema has `createdAt`)
+
+If you add `timestamps: true` to your schema:
+
+```js
+const userSchema = new mongoose.Schema({
+  firstName: String,
+  lastName: String,
+  email: String
+}, { timestamps: true });
+```
+
+Then use:
+
+```js
+userSchema.statics.findRecentUsers = function (days) {
+  const date = new Date();
+  date.setDate(date.getDate() - days);
+  return this.find({ createdAt: { $gte: date } });
+};
+```
+
+---
+
+Let me know if you want **instance methods** (`userSchema.methods`) or **query helpers** as well.
+======================================================================================================
+
+  {
+        "_id": "688f0b2ceb2e0c40ed6d9701",
+        "name": "abhishek",
+        "email": "abhishekanand7091@gmail.com",
+        "gender": "male",
+        "createdAt": "2025-08-03T07:09:32.084Z",
+        "__v": 0
+    },
+Yeh __v ka matlab hai version of the document.
+
+-By default, iska value 0 hota hai jab document first time create hota hai.
+-Agar aap document me update karte ho (specially in cases like optimistic concurrency), to Mongoose is __v value ko increment karta hai.
+=============================================================================================

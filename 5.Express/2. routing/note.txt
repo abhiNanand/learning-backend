@@ -19,3 +19,35 @@ Respond to a PUT request to the /user route:
 app.put('/user', (req, res) => {
   res.send('Got a PUT request at /user')
 })
+================================================================
+
+✅ How to access things from req.
+
+1. If cliend sending data usually JSON in PUT or Post - req.body
+2. can also acess json one by one 
+   {
+  "name": "Abhishek",
+  "email": "test@example.com",
+  "gender": "male"
+}
+
+isko one by one lene ke leye
+
+req.body.name
+req.body.email
+req.body.gender
+
+3. for dynamic route like /students/:id   -> /student/123
+    req.params.id
+
+4. for query parameters
+    Used in the URL after a ? like /students?gender=male&limit=5
+
+    req.query.gender
+    req.query.limit
+
+5. For reading things like authentication tokens, content-type, etc.
+   req.header(["authorisation"]);
+  
+===============================================================================================
+

@@ -1,0 +1,101 @@
+5. Basic CRUD Operations
+-Model.create()
+-Model.find(), findOne(), findById()
+-Model.updateOne(), updateMany()
+-Model.deleteOne(), deleteMany()
+
+6. Mongoose Query Methods
+-find(), select(), sort(), limit(), skip()
+-Query chaining
+
+7. Mongoose Validation
+-Built-in validators: required, minlength, maxlength, enum, match
+-Custom validators
+
+10. Timestamps
+-timestamps: true for createdAt and updatedAt
+
+8. Middleware (Hooks)
+-pre('save'), post('save')
+-pre('find'), post('find')
+-Use-case: password hashing before save
+
+11. Populate (Joins like feature)
+-Use of ref and populate()
+-One-to-many and many-to-many relationships
+
+12. Indexes
+-Single field and compound indexes
+-Unique, Sparse, TTL
+-autoIndex and production considerations
+
+12. Indexes
+-Single field and compound indexes
+-Unique, Sparse, TTL
+-autoIndex and production considerations
+
+13. Aggrestion and pipeline.
+===============================================================================================
+Update method 1 in examples other methods to update. 
+✅ 2. Model.findOneAndUpdate(filter, updateObj, options)
+🔧 Update one student by email
+js
+Copy
+Edit
+app.put("/students/email/:email", async (req, res) => {
+  try {
+    const updatedStudent = await Student.findOneAndUpdate(
+      { email: req.params.email },
+      req.body,
+      { new: true, runValidators: true }
+    );
+
+    if (!updatedStudent) {
+      return res.status(404).json({ message: "Student not found" });
+    }
+
+    res.json(updatedStudent);
+  } catch (err) {
+    res.status(400).json({ message: err.message });
+  }
+});
+✅ 3. Model.updateOne(filter, updateObj)
+🔧 Update one student using a filter
+js
+Copy
+Edit
+app.patch("/students/updateone", async (req, res) => {
+  const { email, name } = req.body;
+
+  try {
+    const result = await Student.updateOne({ email }, { $set: { name } });
+
+    if (result.modifiedCount === 0) {
+      return res.status(404).json({ message: "No matching student found or data is same" });
+    }
+
+    res.json({ message: "Student updated", result });
+  } catch (err) {
+    res.status(400).json({ message: err.message });
+  }
+});
+✅ 4. Model.updateMany(filter, updateObj)
+🔧 Update multiple students (e.g., change gender of all “male” to “other”)
+js
+Copy
+Edit
+app.patch("/students/updatemany", async (req, res) => {
+  try {
+    const result = await Student.updateMany(
+      { gender: "male" },
+      { $set: { gender: "other" } }
+    );
+
+    res.json({
+      message: `${result.modifiedCount} students updated`,
+      result
+    });
+  } catch (err) {
+    res.status(400).json({ message: err.message });
+  }
+});
