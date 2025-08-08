@@ -1,0 +1,28 @@
+https://www.youtube.com/watch?v=arSL-XLxvFU
+
+Path module: Node Js
+
+In nodejs the path module provides utilities for working with file and 
+directory path. 
+It is a build in module. 
+
+Special Node.js Constants
+-------------------------
+
+__filename:
+-provides the absolute path of the currently executing file name.
+
+__dirname
+-provides the absolute directory path of the currently executing file. 
+
+Note, these are only available in commonJs
+
+======================================
+
+Path Module Features:
+---------------------
+
+path.parse()- returns object with details about given path, includes root, dir, base, ext and name
+
+path.join() -  join multiple path segments into one, using appropriate seperator. (\ on windows, / on Linux/maxOS).
+
