@@ -1,0 +1,215 @@
+Node.js में जब यूज़र से पासवर्ड आता है, तो उसे direct text form में database में store नहीं करना चाहिए।
+हम उसे hash करके store करते हैं ताकि अगर database leak हो जाए तो भी असली password किसी को ना मिले।
+
+Step-by-step process
+1️⃣ bcrypt install करो
+
+npm i bcrypt 
+
+2️⃣ Password hash करना
+
+const bcrypt = require("bcrypt);
+
+const plainpassword="scret123pass";//// user se aaya password
+const saltRounds=10;// // jitna jyada utna secure, lekin slow
+
+bcrypt.hash(plainpassword,saltRounds,(err,hash)=>{
+  if(err){
+    console.log("Error hashing password:",err);
+  }
+  console.log("Hashed password",hash);
+});
+output will be something like this:
+$2b$10$cQc07Z/e/yTuTky6412lp.ouk7zhAwAZLJNwk0AjADsZcteq8ZztC
+
+Salt round basically ye decide karta hai ki bcrypt password ko kitni baar internally “process” kare — jitna zyada round hoga, utna zyada secure hash milega, lekin hashing slow bhi ho jayegi.
+======================================
+
+3️⃣ Password verify करना (login ke time)
+
+const enteredPassword=scret123pass; //login form se aaya hua password.
+
+const storedHash = "$2b$10..." //database me save keya hua hash
+
+bcrypt.compare(enteredPassword, storedHash,(err,result)=>{
+  if(result){
+    console.log("password matched");
+  }
+  else{
+    console.log("Passoword incorrect");
+  }
+});
+
+======================================
+
+Hash irreversible होता है — hash से original password निकालना possible नहीं होता।
+
+Salt automatically bcrypt generate करता है ताकि हर hash unique हो।
+
+कभी भी plain password save मत करो — हमेशा hash + salt का इस्तेमाल करो।
+
+Login के time, entered password को hash करके compare नहीं करते,
+बल्कि bcrypt internally handle करता है compare में।
+
+=====================================
+using Nodejs, express, mongoDb together.
+
+const express = require("express");
+const mongoose = require("mongoose");
+const bcrypt = require("bcrypt");
+
+const app = express();
+app.use(express.json()); // JSON body parse
+
+// 📌 MongoDB connection
+mongoose.connect("mongodb://127.0.0.1:27017/testdb", {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+})
+.then(() => console.log("MongoDB connected"))
+.catch(err => console.error(err));
+
+// 📌 User Schema
+const userSchema = new mongoose.Schema({
+  username: String,
+  password: String // hash store होगा
+});
+
+const User = mongoose.model("User", userSchema);
+
+// 🟢 SIGNUP route
+app.post("/signup", async (req, res) => {
+  try {
+    const { username, password } = req.body;
+
+    // password hash
+    const saltRounds = 10;
+    const hashedPassword = await bcrypt.hash(password, saltRounds);
+
+    // save user
+    const newUser = new User({ username, password: hashedPassword });
+    await newUser.save();
+
+    res.status(201).json({ message: "User created successfully" });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// 🟢 LOGIN route
+app.post("/login", async (req, res) => {
+  try {
+    const { username, password } = req.body;
+
+    // user find
+    const user = await User.findOne({ username });
+    if (!user) return res.status(400).json({ message: "User not found" });
+
+    // password verify
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) return res.status(400).json({ message: "Invalid password" });
+
+    res.json({ message: "Login successful ✅" });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// Start server
+app.listen(3000, () => console.log("Server running on http://localhost:3000"));
+===================================
+with jwt. 
+
+
+const express = require("express");
+const mongoose = require("mongoose");
+const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
+
+const app = express();
+app.use(express.json());
+
+// 📌 MongoDB connect
+mongoose.connect("mongodb://127.0.0.1:27017/testdb", {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+})
+.then(() => console.log("MongoDB connected"))
+.catch(err => console.error(err));
+
+// 📌 User schema
+const userSchema = new mongoose.Schema({
+  username: String,
+  password: String
+});
+
+const User = mongoose.model("User", userSchema);
+
+// 📌 Secret key (env में रखना चाहिए)
+const JWT_SECRET = "mySuperSecretKey";
+
+// 🔹 Middleware: Token verify
+function authMiddleware(req, res, next) {
+  const token = req.headers["authorization"]; // "Bearer token"
+  if (!token) return res.status(401).json({ message: "Token missing" });
+
+  const actualToken = token.split(" ")[1]; // remove "Bearer "
+  jwt.verify(actualToken, JWT_SECRET, (err, decoded) => {
+    if (err) return res.status(403).json({ message: "Invalid token" });
+    req.user = decoded; // user data store
+    next();
+  });
+}
+
+// 🟢 SIGNUP
+app.post("/signup", async (req, res) => {
+  try {
+    const { username, password } = req.body;
+
+    // Hash password
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    const newUser = new User({ username, password: hashedPassword });
+    await newUser.save();
+
+    res.status(201).json({ message: "User created successfully" });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// 🟢 LOGIN
+app.post("/login", async (req, res) => {
+  try {
+    const { username, password } = req.body;
+
+    // Check user
+    const user = await User.findOne({ username });
+    if (!user) return res.status(400).json({ message: "User not found" });
+
+    // Verify password
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) return res.status(400).json({ message: "Invalid password" });
+
+    // Generate JWT
+    const token = jwt.sign({ id: user._id, username: user.username }, JWT_SECRET, {
+      expiresIn: "1h" // 1 hour valid
+    });
+
+    res.json({ message: "Login successful ✅", token });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// 🟢 Protected Route
+app.get("/profile", authMiddleware, (req, res) => {
+  res.json({ message: "This is your profile", user: req.user });
+});
+
+// Server start
+app.listen(3000, () => console.log("Server running on http://localhost:3000"));
+
+
+
+=====================================
