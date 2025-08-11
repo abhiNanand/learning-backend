@@ -1,0 +1,59 @@
+Server side rendering in nodejs
+-------------------------------
+
+one simple example of server side rendering. 
+
+app.get('/test',(req,res)=>{
+  res.end("<h1>Hey from server</h1>");
+})
+This is a server side rendering. 
+
+What is Server-Side Rendering (SSR)?
+Server-Side Rendering means:
+-The server creates the HTML for the page before sending it to the browser.
+-The browser just receives ready-made HTML and displays it — no need for the browser to build the page from scratch using JavaScript.
+
+=================================================================================================================
+How it works
+-------------
+
+1. Client (browser) → sends a request to a server.
+2. Server → runs code (Node.js, PHP, etc.), prepares an HTML string with content.
+3. Server → sends that HTML to the browser.
+4. Browser → displays it immediately.
+
+======================================
+EJS - Embedded Javascript Template.
+Ye ek templating engine hai jo Node.js + Express ke saath use hota hai taaki tum HTML pages me JavaScript logic embed kar sako.
+
+Server-side rendering (SSR) me EJS ka kaam basically ye hota hai ki:
+
+-Server pe HTML banata hai
+-Tum data (jaise MongoDB se aaya) ko EJS template me inject karte ho.
+-EJS is data ko HTML me replace karke ek ready-made HTML page bana deta hai.
+
+=====================================================================================================
+Example 1.
+
+const express = require("express");
+const app = express();
+
+app.set("view engine","ejs");
+
+app.get("/",(req,res)=>{
+    res.render("index",{name:"Abhishek"});
+ });
+
+app.listen(3000, () => console.log("Server running on port 3000"));
+
+views/index.ejs
+---------------
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>My Page</title>
+  </head>
+  <body>
+    <h1>Hello,<%= name%>!</h1>
+  </body>
+</html>

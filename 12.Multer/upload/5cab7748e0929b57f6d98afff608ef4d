@@ -1,0 +1,47 @@
+#any of these two line can select file
+a<-read.csv(file.choose())
+a<-read.csv("")
+a
+View(a)
+
+#1. print the initial 6 rows
+head(a, n=6)
+
+#2. print the last 6 rows
+tail(a,n=6)
+
+#3. print the class and structure of dataframe
+print(class(a))
+print(str(a))
+
+#4 print only the first row
+print(head(a, n = 1))
+
+#5 print firstrow and second element
+first_row <- a[1, ]  # Selecting the first row
+second_element <- a[1, 2]  # Selecting the second element of each column in the first row
+# Print the results
+print(first_row)
+print(second_element)
+
+#6 print the subset where radius greater than 24
+subset_data <- a[a$radius > 24, ]
+# Print the subset
+print(subset_data)
+
+#7 for diabitic -print the subset where age >24 except DiabetesPedigreeFunction
+#code - subset(a,age>30,select=-DiabetesPedigreeFunction)
+
+
+
+#8 print the subset where texture>24 and print the
+subset_data <- a[a$texture > 24, ]
+# Print the subset
+print(subset_data)
+
+#9 column from bmi to outcome
+
+
+#10 find the mean, median, standard deviation, min, max on dataset
+summary_data <- summary(a)
+print(summary_data)
