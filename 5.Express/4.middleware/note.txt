@@ -1,4 +1,4 @@
--Middleware is funtion inspect, log, modify, or validate the request.
+-Middleware is function inspect, log, modify, or validate the request.
 -It runs between the request (req) and the response (res) during the lifecycle of an HTTP request.
 -Call next() to pass control to the next middleware or route.
 
@@ -53,4 +53,3 @@ app.use(async (req, res, next) => {
 app.use(async (req, res, next) => {
   await someAsyncFunc(); // if error occurs, Express handles it
 });
-

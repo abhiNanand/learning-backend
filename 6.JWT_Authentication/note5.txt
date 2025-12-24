@@ -280,3 +280,89 @@ fetch('/refresh', {
 ---
 
 Let me know if you'd like the **React-side setup**, or want to try this server in full code.
+======================================================
+
+Jwt expires quickly for security. But if user still active we don't want to force them to login again and again.
+So we introduce:
+
+1.Access Token - short lived for (15m, 1hr). send with every request in headers.
+
+2. Refresh Token - long-lived(7Days, 30Days). Stored securely (usually in http cookie). Used to get new access token when old one get expires. 
+
+Flow:
+1. User logs in - backend issue access token + refresh token.
+
+2. access token expires - frontend automatically calls /refresh with refresh token(cookie)
+
+3. Backend validates refesh token - issue new access token.
+
+4. If refresh token is expired/invalid - user must 
+re-login.
+=========================================================
+
+Backend Implementation (Express + jwt)
+
+import jwt from jsonwebtoken;
+
+const getAccessToken = (user) =>{
+  return jwt.sign({id:user._id},process.env.SECERET_CODE,{expiresIn:"15m"});
+}
+
+const generateRefreshToken = (user)=>{
+  return jwt.sign({id:user._id}, process.env.REFRESH_SECRET,{expiresIn:"7d"});
+}
+
+2. Login Route:
+
+router.post("/login",async(req,res)=>{
+  const {email,password}= req.body;
+  const user = await User.findOne({email});
+  if(!user) return res.status(400);
+
+  const isPasswordValid =
+  if(!isPasswordValid) return res.status(400);
+
+  const accessToken = getAccessToken(user);
+  const refreshToken = getRefreshToken(user);
+  
+  //save refesh token in DB if you want:
+  user.refreshToken = refreshToken;
+
+  await user.save();
+
+  //send resh token in httpOnly cookie;
+
+  res.cookie("refreshToken",refreshToken,{
+    httpOnly:true,
+  });
+
+  res.json({accessToken});
+
+
+});
+
+======================================================
+3. Refresh Route 
+
+router.post("/refresh",async(req,res)=>{
+  const token = req.cookies.refreshToken;
+  if(!token)
+  return res.status(401).no refrsh token;
+
+  jwt.verify(token,process.env.REFRESH_SECERET,asycn(err,decoded)=>{
+    if(err) return res.status(403) invalid refresh token.
+  })
+
+  const user = await User.findById(decoded.id);
+  if(!user || user.refreshToken !== token){
+    return res.status(403).json({message:"invalid refresh token});
+  }
+  const newAccessToken = generateAccessToken(user);
+  res.json({accessToken:newAccessToken});
+})
+
+4. Logout Route
+router.post("/logout", async (req, res) => {
+  res.clearCookie("refreshToken");
+  res.json({ message: "Logged out" });
+});

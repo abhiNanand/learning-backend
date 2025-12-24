@@ -13,6 +13,11 @@ Server-Side Rendering means:
 -The server creates the HTML for the page before sending it to the browser.
 -The browser just receives ready-made HTML and displays it — no need for the browser to build the page from scratch using JavaScript.
 
+Server Side Rendering (SSR) ka matlab:
+SSR ka matlab hota hai ki web page ka HTML content server pe generate karke browser ko bhejna.
+
+SSR ek technique hai jisme ye backend code use karke HTML pages ko dynamically generate karta hai.
+
 =================================================================================================================
 How it works
 -------------

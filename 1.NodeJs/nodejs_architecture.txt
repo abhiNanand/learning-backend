@@ -89,7 +89,7 @@ Jo bhi final result hai, wo **client/browser** ko bhej diya jata hai
 3. Synchronous task → call stack me chala gaya → done
 4. Asynchronous task → Thread Pool ko diya
 5. Event Loop free raha, aur dusre kaam karta raha
-6. Thread Pool ne kaam kiya → callback bheja
+6. Thread Pool ne kaam kiya → callback queue me bheja
 7. Event Loop ne callback uthaya
 8. Response user ko diya ✅
 
@@ -127,4 +127,6 @@ Agar empty hai, toh:
 Callback Queue (normal async tasks jaise setTimeout) se task uthata hai.
 Ya Microtask Queue (Promises, process.nextTick) se task uthata hai.
 Utha ke woh task V8 engine ke through Call Stack me bhejne deta hai — khud directly nahi daalta.
+
+Jab client se request aati hai, wo event queue (ya incoming queue) me place hoti hai. Event Loop continuously check karta hai ki call stack free hai ya nahi. Agar request simple synchronous task hai, wo call stack me directly execute hota hai. Agar request heavy/asynchronous task hai (jaise file read, hashing, compression), Node.js usse thread pool (libuv) me delegate kar deta hai. Task complete hone ke baad, uska callback queue me chala jata hai. Event Loop phir check karta hai ki call stack khali hai ya nahi; agar khali hai, callback queue se task uthakar call stack me daal deta hai aur execute karwata hai.
 ------------------------------------------------------------------------------------------------------------

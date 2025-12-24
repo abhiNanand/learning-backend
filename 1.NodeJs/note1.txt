@@ -5,6 +5,8 @@ Term	Meaning
 Node.js ek environment hai jo JavaScript ko browser ke bahar – yaani server par chalane deta hai
 🟢 Matlab ab aap JavaScript se server-side kaam bhi kar sakte ho, jaise:
 
+Node.js is a runtime environment that allows you to run JavaScript outside the browser, mainly on the server side.
+
 -File read/write karna
 -Database se data lena
 -API banana
