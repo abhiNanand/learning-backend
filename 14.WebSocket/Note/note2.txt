@@ -1,0 +1,174 @@
+Project initialization
+----------------------
+
+1. install node js , create index.js
+2. in index.js 
+import express from 'express';
+import { createServer } from 'node:http';
+
+const app = express();
+const server = createServer(app);
+
+app.get('/', (req, res) => {
+  res.send('<h1>Hello world</h1>');
+});
+
+server.listen(3000, () => {
+  console.log('server running at http://localhost:3000');
+});
+
+Node- here we use server.listen instead of app.listen because app.listen directly create server but don't give full control of server. but http create server give us full control of server, here we will use express for just handling request. 
+
+ console.log(import.meta.url);  
+//current file ki location deta hai from root directory
+// Ye URL format me hai
+// Node ka path module URL samajh nahi pata
+// fileURLToPath() function is used to convert a file URL to a file path. It takes a file URL as an argument and returns the corresponding file path as a string. This is particularly useful when working with modules in Node.js, where you may need to convert module URLs to file paths for various operations, such as reading files or resolving module paths.
+//dirname() - root se folder tak ka path deta hai not file tak ka path deta hai.
+//dirname("C:/Users/Abhishek/project/server.js")
+//output: "C:/Users/Abhishek/project"
+//4️⃣ join() — path ko safely jodne ke liye
+// join(__dirname, 'index.html')
+//C:/Users/Abhishek/project/index.html
+//res.sendFile() — file browser ko bhejna
+ 
+
+3. import express from 'express';
+import { createServer } from 'http';
+const app = express();
+const server = createServer(app);
+import path from 'path';
+
+ app.use(express.static(path.resolve("public")));
+
+app.get('/h', (req, res) => {
+  res.send('hello');
+});
+
+server.listen(3000, () => {
+  console.log('server running at http://localhost:3000');
+});
+
+and crate a html file, take a input and send button.
+
+4. Socket io contain 2 parts
+    (i) a server that integrate with nodejs server.
+    (ii) A client library that loads on the browser side (the socket.io-client package).
+  
+  install - npm install socket.io
+  Add these in code. 
+  import { Server } from 'socket.io';
+  const io = new Server(server);
+  io.on('connection', (socket) => {
+  console.log('a user connected');
+});
+
+//explanation. 
+const io = new Server(server);
+👉 io = Socket.IO ka main server instance
+
+Socho:
+
+app → Express server handle karta hai
+
+io → real-time connections handle karta hai
+
+io ka kaam:
+
+naye users ko listen karna
+
+sab clients ko message bhejna
+
+rooms / namespaces manage karna
+
+🔹 io.on() ka matlab
+io.on(eventName, callback)
+
+Ye bilkul Node.js ke event system jaisa hai.
+👉 Meaning:
+“Jab ye event ho, tab ye function chalao”
+
+🔹 'connection' event kya hota hai?
+ connection ek event hai jb koi client server se socket connection banata hai tab connection trigger hota hai. 
+
+🔹 socket kya hai?
+(socket) => { ... }
+👉 socket = ek single connected user
+Har user ke liye:
+naya socket object banta hai
+uska unique id hota hai
+uske events hote hain
+
+socket.id = unique user id. 
+
+Some more events example 
+io.on('connection', (socket) => {
+  console.log('user connected:', socket.id);
+
+  socket.on('message', (data) => {
+    console.log('message from client:', data);
+  });
+
+  socket.on('disconnect', () => {
+    console.log('user disconnected:', socket.id);
+  });
+});
+//  io.on diffrent events ko handle karta hai
+
+(5)
+<script src="/socket.io/socket.io.js"></script>
+<script>
+  const socket = io(); // this creates websocket connection from browser to server
+</script>
+
+io() automatically:
+Connects to the same origin (same domain + port)
+Uses WebSocket (falls back to polling if needed)
+
+this is equivalent to 
+const socket = io("http://localhost:3000");
+
+What is socket?
+
+socket is a live connection object.
+
+You use it to:
+
+// receive data from server
+socket.on("message", (data) => {
+  console.log(data);
+});
+
+// send data to server
+socket.emit("chat-message", "Hello server");
+
+
+6.Now you can see a user connected in console.
+
+7. const form = document.getElementById("form");
+  const input =  document.getElementById("input");
+
+  form.addEventListener('submit',(e)=>{
+    e.preventDefault();
+    if(input.value){
+      socket.emit('chat message',input.value); //emit matalb event fire karna
+      input.value='';
+    }
+  });
+
+  in backend
+
+ io.on("connection",(socket)=>{
+  console.log("A user had connected", socket.id);
+
+  socket.on("disconnect",()=>{
+    console.log('user disconnected');
+  });
+
+  socket.on('chat message',(msg)=>{
+    console.log('message'+msg);
+  });
+ });
+
+ yha tk hum client se message bhej rhe hai server ko and server pr show kr rhe hai message. 
+ 

@@ -1,0 +1,31 @@
+1. Hey client server appas me kaise baat kartey hai client server ko request bhejta hai uske baad server response bhejta hai fir vo process close ho jata hai, 
+tho man lo 2 log chat kar rhe hai, 
+
+client A  ->   ServerA <- client B
+
+tho chat kaise karenge client A server pr message bhejega, clint B server se puchega ki koi message aaya hai tho server usko uska message bhej dega, ish process me project ye hai ki har baar cleint a and b ko bbar baar server se puchna parega ki koi message aaya hai kya, 
+Ish process ko (Polling) boltey hai q ki tum har ek second server se poll kr rhe ho, 
+
+->(Polling) in the backend is a  technique where a client (e.g., frontend app) repeatedly sends HTTP requests to a server at set intervals to check for updates, new data, or task completion.
+
+tho polling ek overkill technique ho gya, overkill refers to using more resources, technology, or complexity than is necessary to solve a problem.q ki polling se server pr load increase ho jayega
+ish problem ka solution hai (WebSocket).
+
+Har ek request and response ke baad hum  close kartey hai vo process, but websocket me hum close nhi krtey hai, websocket me bi-directional communication hota hai server jb chaheye communicate kr sakta hai, 
+
+Ye hota kaise hai?
+Hum phalaey server ko ek http request bhejtey hai, boltey hai ish request ko upgrade kr do websocket me, 
+ 
+What is WebSocket?
+It is a communication protocol provides bi-directional communication over a singhle tcp connection, allowing for low latency and real time data transfer.
+To impletement this in node js we use (socket io) library.bi-directional communication channel between a client and a server. This means that the server can push messages to clients. Whenever you write a chat message, the idea is that the server will get it and push it to all other connected clients.
+real-time communication between client & server
+
+npm install socket.io
+
+Socket io contain 2 parts
+    (i) a server that integrate with nodejs http server (the socket.io package).
+    (ii) A client library that loads on the browser side (the socket.io-client package).
+    
+
+
